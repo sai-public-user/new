@@ -4,21 +4,23 @@
     border-radius: 4px;
     background-color: #3c65ab;
     color: white;
-    /* width: calc(100vw - 40px); */
-    margin-left: 20px ;
 }
 
 .header .name {
     font-weight: 650;
 }
 
-.tablee_row {
+.table_row {
     min-height: 52px;
     max-height: 52px;
     border-radius: 4px;
-    max-width: calc(100vw - 40px);
-    margin-left: 20px ;
     font-weight: 400;
+}
+
+.row-checkbox {
+}
+
+.compare_icon {
 }
 
 /* .pinned_cell {

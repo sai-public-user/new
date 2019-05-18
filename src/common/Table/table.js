@@ -20,6 +20,7 @@ class Table extends Component {
             ],
             rows: [
                 {
+                    id: 0,
                     county: 'zero',
                     county_fir: 'first',
                     county_sec: 'second',
@@ -29,6 +30,7 @@ class Table extends Component {
                     county_six: 'six',
                     county_sev: 'seven',
                 }, {
+                    id: 1,
                     county: 'zero',
                     county_fir: 'first',
                     county_sec: 'second',
@@ -38,6 +40,7 @@ class Table extends Component {
                     county_six: 'six',
                     county_sev: 'seven',
                 }, {
+                    id: 2,
                     county: 'zero',
                     county_fir: 'first',
                     county_sec: 'second',
@@ -47,6 +50,7 @@ class Table extends Component {
                     county_six: 'six',
                     county_sev: 'seven',
                 }, {
+                    id: 3,
                     county: 'zero',
                     county_fir: 'first',
                     county_sec: 'second',
@@ -56,6 +60,7 @@ class Table extends Component {
                     county_six: 'six',
                     county_sev: 'seven',
                 }, {
+                    id: 4,
                     county: 'zero',
                     county_fir: 'first',
                     county_sec: 'second',
@@ -65,6 +70,7 @@ class Table extends Component {
                     county_six: 'six',
                     county_sev: 'seven',
                 }, {
+                    id: 5,
                     county: 'zero',
                     county_fir: 'first',
                     county_sec: 'second',
@@ -76,27 +82,36 @@ class Table extends Component {
                 },
             ],
             pinned: [],
+            checked: [],
         };
     }
 
     isPinned = (e) => {
-        const { pinned = [] } = this.state;
-        console.log(e.currentTarget.getAttribute('name'), 'is pinned');
+        let { pinned = [] } = this.state;
         if (pinned.includes(e.currentTarget.getAttribute('name'))) {
             pinned = pinned.filter(one => one != e.currentTarget.getAttribute('name'))
         } else {
             pinned.push(e.currentTarget.getAttribute('name'));
         }
-        console.log('all pinned columns ==> ', pinned);
         this.setState({ pinned });
     }
 
+    rowCheckBoxChange = ({ target: { name = "" } = {} }) => {
+        let { checked = [] } = this.state;
+        if (checked.includes(Number(name))) {
+            checked = checked.filter(one => one != Number(name))
+        } else {
+            checked.push(Number(name));
+        }
+        this.setState({ checked });
+    }
+
     render() {
-        const { pinned, headers, rows } = this.state;
+        const { pinned, headers, rows, checked } = this.state;
         return (
             <Fragment>
                 <Header headers={headers} pinned={pinned} isPinned={this.isPinned} />
-                { Array.isArray(rows) && rows.map((row, i) => <Row row={row} key={i} headers={headers} pinned={pinned} />)}
+                { Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={headers} pinned={pinned} />)}
             </Fragment>
         );
     }

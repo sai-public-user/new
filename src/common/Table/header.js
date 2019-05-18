@@ -8,12 +8,12 @@ const windowRestorSvg = () => (
 function Header(props) {
     const { pinned = [], headers = [], isPinned } = props;
     return (
-        <div className="header m-1 p-3 text-uppercase row">
-            <span className="compare_icon d-flex align-items-center mr-2">{windowRestorSvg()}</span>
+        <div className="header p-3 ml-1 mr-1 text-uppercase row">
+            <span className="compare_icon align-content-center mr-2">{windowRestorSvg()}</span>
             {headers.map(col => {
                 const { name = '', value = '' } = col;
                 return (
-                    <div className={`row header_cell col d-flex align-items-center ${pinned.includes(value) ? 'pinned_cell' : ''}`} key={value} name={value}>
+                    <div className={`row header_cell col m-0 p-0 pl-2 align-content-center ${pinned.includes(value) ? 'pinned_cell' : ''}`} key={value} name={value}>
                         <span className="name">{name}</span>
                         <span className={`text-white ml-2 ${pinned.includes(value) ? 'text-info' : ''}`} name={value} onClick={isPinned}><i className="fa fa-thumb-tack" aria-hidden="true" /></span>
                     </div>

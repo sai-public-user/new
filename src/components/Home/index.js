@@ -322,7 +322,7 @@ class Home extends Component {
         return ( 
             <Fragment>
                 <h1 id="header_comp" className="pb-3 mb-0 pl-3 pt-3">Benefits Structures</h1>
-                <div className="mainContainer"><BenefitStructure /></div>
+                <div className="mainContainer pl-4 pr-4"><BenefitStructure /></div>
                 {/* <div className="row">
                 {
                     allServices.map(({ domainName = null, serviceName = null }) => (

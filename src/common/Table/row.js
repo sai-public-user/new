@@ -3,6 +3,12 @@ import Cell from './cell';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
+// import * as Styles from './SharedStyles';
+
+// const {
+    
+// } = Styles.default;
+
 function Row(props) {
     const {
         row = {}, headers = null , pinned = [],

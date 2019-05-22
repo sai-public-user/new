@@ -1,6 +1,34 @@
 import React, { Component, Fragment } from 'react';
 import BenefitStructure from '../BenefitStructure/index';
 import './styles.css';
+import * as Styles from '../../common/Table/SharedStyles';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+    colorSwitchBase: {
+      color: '#0cb1c3',
+      '&$colorChecked': {
+        color: '#0cc324',
+        '& + $colorBar': {
+          backgroundColor: '#ffffff',
+        },
+      },
+    },
+    colorBar: {},
+    colorChecked: {},
+});
+
+const {
+    Header,
+    MaindataContainer,
+    TableFilters,
+    SwitchText,
+} = Styles.default;
+
+
 
 // const givenData = {
 //     "env": [
@@ -310,19 +338,67 @@ import './styles.css';
 class Home extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            days: [],
+        }
+    }
+
+    handleSwitchChange = ({ target: { value } }) => {
+        let { days = [] } = this.state;
+        if (days.includes(value)) {
+            days = days.filter(one => one !== value)
+        } else {
+            days.push(value);
+        }
+        this.setState({ days });
     }
 
     render() {
-        // const { env = null } = givenData;
-        // let data = null;
-        // data = env.filter(({ envName = 'null' }) => envName === 'unit');
-        // const { datapowerboxes = null } = Array.isArray(data) ?  data[0] : [];
-        // const domainList = datapowerboxes.map(({ domainList = null }) => domainList.map(({ serviceList = null }) => serviceList));
-        // const allServices = [].concat.apply([], [].concat.apply([], domainList));
+        const { days = [] } = this.state;
+        console.log(this.props);
+        const { classes } = this.props;
         return ( 
             <Fragment>
-                <h1 id="header_comp" className="pb-3 mb-0 pl-3 pt-3">Benefits Structures</h1>
-                <div className="mainContainer pl-4 pr-4"><BenefitStructure /></div>
+                <Header>
+                    <span><h1>Benefits Structures</h1></span>
+                    <TableFilters>
+                        <FormGroup row>
+                            <FormControlLabel
+                              control={
+                                <Switch
+                                  checked={days.includes("30")}
+                                  onChange={this.handleSwitchChange}
+                                  value="30"
+                                  classes={{
+                                    switchBase: classes.colorSwitchBase,
+                                    checked: classes.colorChecked,
+                                    bar: classes.colorBar,
+                                  }}
+                                />
+                              }
+                              label={<SwitchText>30 Days</SwitchText>}
+                            />
+                            <FormControlLabel
+                              control={
+                                <Switch
+                                  checked={days.includes("90")}
+                                  onChange={this.handleSwitchChange}
+                                  value="90"
+                                  classes={{
+                                    switchBase: classes.colorSwitchBase,
+                                    checked: classes.colorChecked,
+                                    bar: classes.colorBar,
+                                  }}
+                                />
+                              }
+                              label={<SwitchText>90 Days</SwitchText>}
+                            />
+                        </FormGroup>
+                    </TableFilters>
+                </Header>
+                <MaindataContainer>
+                    <BenefitStructure />
+                </MaindataContainer>
                 {/* <div className="row">
                 {
                     allServices.map(({ domainName = null, serviceName = null }) => (
@@ -338,4 +414,4 @@ class Home extends Component {
     }
 }
  
-export default Home;
+export default withStyles(styles)(Home);

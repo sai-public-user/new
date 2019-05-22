@@ -1,40 +1,9 @@
-.header {
-    min-height: 52px;
-    max-height: 52px;
-    border-radius: 4px;
-    background-color: #3c65ab;
-    color: white;
-}
-
-.header .name {
-    font-weight: 650;
-}
-
-.table_row {
-    min-height: 52px;
-    max-height: 52px;
-    border-radius: 4px;
-    font-weight: 400;
-}
-
-.row-checkbox {
-}
-
-.compare_icon {
-}
-
-/* .pinned_cell {
+.pinned_cell {
     position: fixed;
     z-index: 9999;
     left: 38px;
     width: 295px;
     height: 52px;
-} */
-
-.table_cell {
-    background-color: #fff;
-    background-clip: border-box;
-    border-radius: 0.25rem;
 }
 
 .table_cell:hover {
@@ -43,8 +12,4 @@
 
 .header_cell:hover {
     background-color: #6f97db;
-}
-
-.first_cell {
-    border-left: 6px solid skyblue;
 }

@@ -11,6 +11,10 @@ text-transform: uppercase;
 padding: 1rem;
 display: flex;
 flex-wrap: wrap;
+max-width: 99vw !important;
+overflow-x: scroll;
+overflow-y: hidden;
+flex-direction: column;
 `;
 
 const Headername = styled.span `
@@ -30,11 +34,13 @@ const HeaderCell = styled.div `
     align-content: center;
     flex-basis: 0;
     flex-grow: 1;
-    max-width: 100%;
+    max-width: 13%;
     position: relative;
-    width: 100%;
+    width: 13%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
 `;
 
 const HeaderPin = styled.div `
@@ -58,6 +64,10 @@ const Header = styled.div `
 
 const TableFilters = styled.div `
     margin-top: 1rem;
+    margin-right: 1rem;
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
 `;
 
 const MaindataContainer = styled.div `
@@ -96,6 +106,8 @@ const TableRow = styled.div `
     margin-right: 0.25rem !important;
     display: flex;
     flex-wrap: wrap;
+    overflow-x: scroll;
+    flex-direction: column;
 `;
 
 const TableRowCell = styled.div `
@@ -108,9 +120,9 @@ const TableRowCell = styled.div `
     align-content: center !important;
     flex-basis: 0;
     flex-grow: 1;
-    max-width: 100%;
+    max-width: 13%;
     position: relative;
-    width: 100%;
+    width: 13%;
     display: flex;
     flex-wrap: wrap;
 `;
@@ -118,6 +130,39 @@ const TableRowCell = styled.div `
 const SwitchText = styled.div `
     color: #fff !important;
     font-weight: 500;
+`;
+
+const TableFilterIcon = styled.div `
+    cursor: pointer;
+`;
+
+const FilterContent = styled.div `
+    width: 37vw;
+    padding: 1.5rem;
+`;
+
+const FilterHeaderPaper = styled.div `
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+`;
+
+const FilterContentBlock = styled.div `
+    border-top: 6px solid lightgreen !important;
+    padding: 1rem;
+    border-radius: 6px;
+    box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 3px 1px -2px rgba(0,0,0,0.12);
+`;
+
+const FilterCell = styled.div `
+    padding: 6px;
+    width: 15vw;
+    text-transform: capitalize;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    &:hover {
+        background: #b9e2f5;
+    }
 `;
 
 export default {
@@ -134,4 +179,9 @@ export default {
     TableRowCell,
     TableFilters,
     SwitchText,
+    TableFilterIcon,
+    FilterContent,
+    FilterContentBlock,
+    FilterCell,
+    FilterHeaderPaper,
 };

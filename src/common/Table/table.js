@@ -2,88 +2,24 @@ import React, { Component, Fragment } from 'react';
 import Header from './header';
 import Row from './row';
 
+import Data from './SampleData';
+
 import './table.css';
 
 class Table extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            headers: [
-                { name: 'County', value: 'county' },
-                { name: 'County fir', value: 'county_fir' },
-                { name: 'County Sec', value: 'county_sec' },
-                { name: 'County Thi', value: 'county_thi' },
-                { name: 'County For', value: 'county_for' },
-                { name: 'County Fiv', value: 'county_fiv' },
-                { name: 'County Six', value: 'county_six' },
-                { name: 'County Sev', value: 'county_sev' },
-            ],
-            rows: [
-                {
-                    id: 0,
-                    county: 'zero',
-                    county_fir: 'first',
-                    county_sec: 'second',
-                    county_thi: 'third',
-                    county_for: 'four',
-                    county_fiv: 'five',
-                    county_six: 'six',
-                    county_sev: 'seven',
-                }, {
-                    id: 1,
-                    county: 'zero',
-                    county_fir: 'first',
-                    county_sec: 'second',
-                    county_thi: 'third',
-                    county_for: 'four',
-                    county_fiv: 'five',
-                    county_six: 'six',
-                    county_sev: 'seven',
-                }, {
-                    id: 2,
-                    county: 'zero',
-                    county_fir: 'first',
-                    county_sec: 'second',
-                    county_thi: 'third',
-                    county_for: 'four',
-                    county_fiv: 'five',
-                    county_six: 'six',
-                    county_sev: 'seven',
-                }, {
-                    id: 3,
-                    county: 'zero',
-                    county_fir: 'first',
-                    county_sec: 'second',
-                    county_thi: 'third',
-                    county_for: 'four',
-                    county_fiv: 'five',
-                    county_six: 'six',
-                    county_sev: 'seven',
-                }, {
-                    id: 4,
-                    county: 'zero',
-                    county_fir: 'first',
-                    county_sec: 'second',
-                    county_thi: 'third',
-                    county_for: 'four',
-                    county_fiv: 'five',
-                    county_six: 'six',
-                    county_sev: 'seven',
-                }, {
-                    id: 5,
-                    county: 'zero',
-                    county_fir: 'first',
-                    county_sec: 'second',
-                    county_thi: 'third',
-                    county_for: 'four',
-                    county_fiv: 'five',
-                    county_six: 'six',
-                    county_sev: 'seven',
-                },
-            ],
+            headers: [],
+            rows: [],
             pinned: [],
             checked: [],
         };
+    }
+
+    componentDidMount() {
+        const { headers, rows } = Data;
+        this.setState({ headers, rows });
     }
 
     isPinned = (e) => {
@@ -105,6 +41,35 @@ class Table extends Component {
         }
         this.setState({ checked });
     }
+
+    // getRows = () => {
+
+    // }
+
+    // getHeaders = (mainName, mainValue) => {
+    //     if(Object.keys(mainValue).length > 0) {
+    //         const tierValues = Object.keys(mainValue).map(tierName => {
+    //              return Array.isArray(mainValue[tierName]) && mainValue[tierName].map(({name, value}) => ({ name, value, parent: tierName })) || [];
+    //         });
+    //         console.log(tierValues);
+    //         return tierValues;
+    //     }
+    // }
+
+    // prepeareTableData = () => {
+    //     //get data from backend
+    //     const { headers = null, rows = null } = Data;
+    //     if (headers !== null) {
+    //         const headersData = headers.map(({ name, value }) => {
+    //             if(typeof value === 'object') {
+    //                 const orderArray = this.getHeaders(name, value);
+    //                 return ({ name, value: orderArray })
+    //             } else {
+    //                 return ({ name, value });
+    //             }
+    //         })
+    //     }
+    // }
 
     render() {
         const { pinned, headers, rows, checked } = this.state;

@@ -6,6 +6,8 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { withStyles } from '@material-ui/core/styles';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
     colorSwitchBase: {
@@ -26,320 +28,19 @@ const {
     MaindataContainer,
     TableFilters,
     SwitchText,
+    TableFilterIcon,
+    FilterContent,
+    FilterContentBlock,
+    FilterCell,
+    FilterHeaderPaper,
 } = Styles.default;
-
-
-
-// const givenData = {
-//     "env": [
-//       {
-//         "envName": "unit",
-//         "datapowerboxes": [
-//           {
-//             "datapowerboxName": "UnitDatapowerBox",
-//             "domainList": [
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               },
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               },
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               }
-//             ]
-//           },
-//           {
-//             "datapowerboxName": "UnitDatapowerBox",
-//             "domainList": [
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               },
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               },
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               }
-//             ]
-//           }
-//         ]
-//       },
-//       {
-//         "envName": "Test",
-//         "datapowerboxes": [
-//           {
-//             "datapowerboxName": "UnitDatapowerBox",
-//             "domainList": [
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               },
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               },
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               }
-//             ]
-//           }
-//         ]
-//       },
-//       {
-//         "envName": "Stage",
-//         "datapowerboxes": [
-//           {
-//             "datapowerboxName": "UnitDatapowerBox",
-//             "domainList": [
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               },
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               },
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               }
-//             ]
-//           }
-//         ]
-//       },
-//       {
-//         "envName": "Prod",
-//         "datapowerboxes": [
-//           {
-//             "datapowerboxName": "UnitDatapowerBox",
-//             "domainList": [
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               },
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               },
-//               {
-//                 "domainName": "unitDomainName",
-//                 "serviceList": [
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   },
-//                   {
-//                     "domainName": "Gateway",
-//                     "serviceName": "ateWayService"
-//                   }
-//                 ]
-//               }
-//             ]
-//           }
-//         ]
-//       }
-//     ]
-//   };
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
             days: [],
+            filterType: ''
         }
     }
 
@@ -353,10 +54,35 @@ class Home extends Component {
         this.setState({ days });
     }
 
+
+    toggleTableFilter = (filterType) => {
+      this.setState({
+        filterType,
+      });
+    };
+
     render() {
-        const { days = [] } = this.state;
-        console.log(this.props);
+        const { days = [], filterType } = this.state;
         const { classes } = this.props;
+        const { benifit: { refs: { table: { state: { headers = [] } = {} } = {} } = {} } = {} } = this.refs || {};
+        let filterHeaderNames = [];
+        const filterHeaders = headers.filter(({ name, value }) => {
+          if (value.indexOf(' - ') > -1) {
+            const tierType = value.split(' - ')[1];
+            if (filterHeaderNames.includes(tierType)) return false;
+            else filterHeaderNames.push(value.split(' - ')[1]);
+            return true;
+          } else filterHeaderNames.push(name); 
+          return true;
+        });
+        filterHeaderNames = JSON.parse(JSON.stringify(filterHeaderNames).replace(/PT:/g, 'Preferred Tier ').replace(/ST:/g, 'Standard Tier '));
+
+        let filterLeft = filterHeaderNames.map(one=>one);
+        filterLeft = filterHeaderNames.length > 10 && filterLeft.splice(0,10);
+        let filterRight = filterHeaderNames.map(one=>one);
+        filterRight = filterHeaderNames.length > 10 && filterRight.splice(10);
+        console.log(filterLeft);
+        console.log(filterRight);
         return ( 
             <Fragment>
                 <Header>
@@ -394,21 +120,42 @@ class Home extends Component {
                               label={<SwitchText>90 Days</SwitchText>}
                             />
                         </FormGroup>
+                        <TableFilterIcon onClick={() => this.toggleTableFilter('column')}><i class="fa fa-table fa-lg" aria-hidden="true"></i></TableFilterIcon>
                     </TableFilters>
                 </Header>
                 <MaindataContainer>
-                    <BenefitStructure />
+                    <BenefitStructure ref="benifit"/>
                 </MaindataContainer>
-                {/* <div className="row">
-                {
-                    allServices.map(({ domainName = null, serviceName = null }) => (
-                        <div className="card m-3 text-center p-3" style={{ maxWidth: '350px', minWidth: '220px' }}>
-                            <div className="font-weight-bold">{domainName}</div>
-                            <div>{serviceName}</div>
-                        </div>
-                    ))
-                }
-                </div> */}
+                <SwipeableDrawer
+                  anchor="right"
+                  open={filterType !== ''}
+                  onClose={() => this.toggleTableFilter('')}
+                >
+                  <FilterContent>
+                    {filterType === 'column' && (
+                      <FilterContentBlock>
+                        <b>Table Columns Selection</b>
+                        <FilterHeaderPaper>
+                          <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
+                            {
+                              Array.isArray(filterLeft) && filterLeft.map(name => <FilterCell>{name}</FilterCell>)
+                            }
+                          </Paper>
+                          <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
+                            {
+                              Array.isArray(filterRight) && filterRight.map(name => <FilterCell>{name}</FilterCell>)
+                            }
+                          </Paper>
+                        </FilterHeaderPaper>
+                      </FilterContentBlock>
+                    )}
+                    {filterType === 'search' && (
+                      <FilterContentBlock>
+                        data come here
+                      </FilterContentBlock>
+                    )}
+                  </FilterContent>
+                </SwipeableDrawer>
             </Fragment>
         );
     }

@@ -33,6 +33,7 @@ const {
     FilterContentBlock,
     FilterCell,
     FilterHeaderPaper,
+    TableContainer,
 } = Styles.default;
 
 class Home extends Component {
@@ -81,8 +82,6 @@ class Home extends Component {
         filterLeft = filterHeaderNames.length > 10 && filterLeft.splice(0,10);
         let filterRight = filterHeaderNames.map(one=>one);
         filterRight = filterHeaderNames.length > 10 && filterRight.splice(10);
-        console.log(filterLeft);
-        console.log(filterRight);
         return ( 
             <Fragment>
                 <Header>
@@ -124,7 +123,9 @@ class Home extends Component {
                     </TableFilters>
                 </Header>
                 <MaindataContainer>
+                  <TableContainer>
                     <BenefitStructure ref="benifit"/>
+                  </TableContainer>
                 </MaindataContainer>
                 <SwipeableDrawer
                   anchor="right"

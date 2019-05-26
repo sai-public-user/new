@@ -1,5 +1,5 @@
 const row = {
-  "id": 1,
+  "id": '',
   "county": "Alachua County",
   "plane_code": "H1032-124-0",
   "organization_name": "WellCare",
@@ -7,9 +7,9 @@ const row = {
   "product_type": "SNP",
   "monthly_premium": "0",
   "annual_drug_deductible": "414",
-  "drug_count": "",
+  "drug_count": "87654321",
   "current_enrollees": "109",
-  "gain_or_loss": "",
+  "gain_or_loss": "Gain",
   "Mail Order - PT:1 - Preferred Generic": "1000$",
   "Mail Order - PT:1 - Preferred Generic": "1000$",
   "Mail Order - PT:2 - Generic": "1000$",
@@ -51,6 +51,67 @@ const row = {
   "Retail Order - ST:5 - Specialty Tier": "1000$",
   "Retail Order - ST:5 - Specialty Tie": "1000$",
 };
+
+const row1 = {
+  "id": 2,
+  "county": "Alachua County",
+  "plane_code": "H1032-124-0",
+  "organization_name": "WellCare",
+  "plane_name": "WellCare Access (HMO SNP)",
+  "product_type": "SNP",
+  "monthly_premium": "0",
+  "annual_drug_deductible": "414",
+  "drug_count": "87654321",
+  "current_enrollees": "109",
+  "gain_or_loss": "Gain",
+  "Mail Order - PT:1 - Preferred Generic": "1000$",
+  "Mail Order - PT:1 - Preferred Generic": "1000$",
+  "Mail Order - PT:2 - Generic": "1000$",
+  "Mail Order - PT:2 - Generic": "1000$",
+  "Mail Order - PT:3 - Preferred Brand": "1000$",
+  "Mail Order - PT:3 - Preferred Brand": "1000$",
+  "Mail Order - PT:4 - Non Preferred Drug": "1000$",
+  "Mail Order - PT:4 - Non Preferred Drug": "1000$",
+  "Mail Order - PT:5 - Specialty Tier": "1000$",
+  "Mail Order - PT:5 - Specialty Tier": "1000$",
+  "Mail Order - ST:1 - Preferred Generic": "1000$",
+  "Mail Order - ST:1 - Preferred Generic": "1000$",
+  "Mail Order - ST:2 - Generic": "1000$",
+  "Mail Order - ST:2 - Generic": "1000$",
+  "Mail Order - ST:3 - Preferred Brand": "1000$",
+  "Mail Order - ST:3 - Preferred Brand": "1000$",
+  "Mail Order - ST:4 - Non Preferred Drug": "1000$",
+  "Mail Order - ST:4 - Non Preferred Drug": "1000$",
+  "Mail Order - ST:5 - Specialty Tier": "1000$",
+  "Mail Order - ST:5 - Specialty Tier": "1000$",
+  "Retail Order - PT:1 - Preferred Generic": "1000$",
+  "Retail Order - PT:1 - Preferred Generic": "1000$",
+  "Retail Order - PT:2 - Generic": "1000$",
+  "Retail Order - PT:2 - Generic": "1000$",
+  "Retail Order - PT:3 - Preferred Brand": "1000$",
+  "Retail Order - PT:3 - Preferred Brand": "1000$",
+  "Retail Order - PT:4 - Non Preferred Drug": "1000$",
+  "Retail Order - PT:4 - Non Preferred Drug": "1000$",
+  "Retail Order - PT:5 - Specialty Tier": "1000$",
+  "Retail Order - PT:5 - Specialty Tier": "1000$",
+  "Retail Order - ST:1 - Preferred Generic": "1000$",
+  "Retail Order - ST:1 - Preferred Generic": "1000$",
+  "Retail Order - ST:2 - Generic": "1000$",
+  "Retail Order - ST:2 - Generic": "1000$",
+  "Retail Order - ST:3 - Preferred Brand": "1000$",
+  "Retail Order - ST:3 - Preferred Brand": "1000$",
+  "Retail Order - ST:4 - Non Preferred Drug": "1000$",
+  "Retail Order - ST:4 - Non Preferred Drug": "1000$",
+  "Retail Order - ST:5 - Specialty Tier": "1000$",
+  "Retail Order - ST:5 - Specialty Tie": "1000$",
+};
+const rows = [];
+
+for(let i = 0; i < 20; i++) {
+  let data = row;
+  data.id = i;
+  rows.push(data);
+} 
 
 const Data = {
     headers: [
@@ -105,7 +166,7 @@ const Data = {
       { name: "30 Days", value: 'Retail Order - ST:5 - Specialty Tier' },
       { name: "90 Days", value: 'Retail Order - ST:5 - Specialty Tier' }
     ],
-    "rows": [ row ],
+    "rows": rows,
   }
   
 

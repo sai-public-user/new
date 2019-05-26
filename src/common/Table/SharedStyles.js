@@ -2,18 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 
 const TableHeader =  styled.div `
-min-height: 28px;
+min-height: 52px;
 max-height: 52px;
+padding-left: 0.5rem;
 border-radius: 4px;
 background-color: #3c65ab;
 color: white;
 text-transform: uppercase;
-padding: 1rem;
 display: flex;
 flex-wrap: wrap;
 max-width: 99vw !important;
-overflow-x: scroll;
-overflow-y: hidden;
 flex-direction: column;
 `;
 
@@ -21,10 +19,11 @@ const Headername = styled.span `
     font-weight: 650;
 `;
 
-const CompareIcon = styled.span `
-    align-content: center;
-    margin-right: 0.5rem;
-    margin-top: 10px;
+const CompareIcon = styled.div `
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
 `;
 
 const HeaderCell = styled.div `
@@ -34,18 +33,25 @@ const HeaderCell = styled.div `
     align-content: center;
     flex-basis: 0;
     flex-grow: 1;
-    max-width: 13%;
+    max-width: 242px;
     position: relative;
-    width: 13%;
+    width: 242px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     text-align: center;
+    min-height: 52px;
+    background-color: #3c65ab;
+    &:hover {
+        background: #6f97db;
+    }
 `;
 
 const HeaderPin = styled.div `
     color: #fff;
     margin-left: 0.5rem;
+    align-items: center;
+    display: flex;
 `;
 
 const Header = styled.div `
@@ -84,11 +90,12 @@ const RowCheckbox = styled.div `
     background-color: #fff;
     background-clip: border-box;
     border-radius: 0.25rem;
-    padding: 0.5rem;
     margin: 0;
     align-content: center;
     display: flex;
     flex-wrap: wrap;
+    min-height: 52px;
+    padding-left: 0.25rem;
 `;
 
 const FirstCell = styled.span `
@@ -96,35 +103,34 @@ const FirstCell = styled.span `
 `;
 
 const TableRow = styled.div `
-    min-height: 52px;
     max-height: 52px;
     border-radius: 4px;
     font-weight: 400;
     text-transform: capitalize !important;
-    margin-top: 1rem !important;
-    margin-left: 0.25rem !important;
-    margin-right: 0.25rem !important;
+    margin-top: 0.5rem !important;
     display: flex;
     flex-wrap: wrap;
-    overflow-x: scroll;
     flex-direction: column;
-`;
-
-const TableRowCell = styled.div `
     background-color: #fff;
     background-clip: border-box;
     border-radius: 0.25rem;
-    padding-left: 0.5rem !important;
-    padding: 0 !important;
-    margin: 0 !important;
+`;
+
+const TableRowCell = styled.div `
     align-content: center !important;
     flex-basis: 0;
     flex-grow: 1;
-    max-width: 13%;
+    max-width: 242px;
     position: relative;
-    width: 13%;
+    width: 242px;
     display: flex;
     flex-wrap: wrap;
+    min-height: 52px;
+    justify-content: center;
+    background-color: #fff;
+    &:hover {
+        background: #e8eff2;
+    }
 `;
 
 const SwitchText = styled.div `
@@ -132,7 +138,7 @@ const SwitchText = styled.div `
     font-weight: 500;
 `;
 
-const TableFilterIcon = styled.div `
+const TableFilterIcon = styled.span `
     cursor: pointer;
 `;
 
@@ -165,6 +171,18 @@ const FilterCell = styled.div `
     }
 `;
 
+const TableContainer = styled.div `
+    flex-direction: column;
+    overflow-x: scroll;
+    border-radius: 4px;
+    overflow-y: scroll;
+    height: -webkit-fill-available;
+`;
+
+const HeaderParent = styled.div `
+    font-size: 10px;
+`;
+
 export default {
     TableHeader,
     Headername,
@@ -184,4 +202,6 @@ export default {
     FilterContentBlock,
     FilterCell,
     FilterHeaderPaper,
+    TableContainer,
+    HeaderParent,
 };

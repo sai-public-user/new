@@ -10,9 +10,10 @@ class BenefitStructure extends Component {
     }
 
     render() {
+        const { days, order } = this.props;
         return ( 
             <Fragment>
-                <Table  ref="table" />
+                <Table ref="table" days={days} order={order} />
             </Fragment>
          );
     }

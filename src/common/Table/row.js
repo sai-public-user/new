@@ -16,13 +16,14 @@ function Row(props) {
         checked = [], checkBoxChange,
     } = props;
     const headerVals = Array.isArray(headers) && headers.map(({ value ='' }) => value) || [];
+    console.log(headerVals, row);
     return (
         <TableRow>
             <RowCheckbox>
                 <FirstCell><Checkbox checked={checked.includes(row.id)} onChange={checkBoxChange} name={row.id} /></FirstCell>
             </RowCheckbox>
             {row && row !== null && Array.isArray(headerVals) && headerVals.map((keyVal, i) => (
-                <Cell data={row[keyVal]} isPinnedVal={pinned.includes(keyVal)} endPosition={ i === 0 || i === headerVals.length - 1 ? i : -1 } />
+                <Cell data={row[keyVal]} isPinnedVal={pinned.includes(keyVal)} name={keyVal} endPosition={ i === 0 || i === headerVals.length - 1 ? i : -1 } />
             ))}
         </TableRow>
     );

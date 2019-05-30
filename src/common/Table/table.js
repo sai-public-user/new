@@ -46,15 +46,18 @@ class Table extends Component {
 
     // }
 
-    // getHeaders = (mainName, mainValue) => {
-    //     if(Object.keys(mainValue).length > 0) {
-    //         const tierValues = Object.keys(mainValue).map(tierName => {
-    //              return Array.isArray(mainValue[tierName]) && mainValue[tierName].map(({name, value}) => ({ name, value, parent: tierName })) || [];
-    //         });
-    //         console.log(tierValues);
-    //         return tierValues;
-    //     }
-    // }
+    getHeaders = (tableCols, days = [], order = '') => {
+        if(tableCols.length > 0) {
+            const headers = tableCols.filter(({ name, value }) => {
+                if (order === 'Retail Order' && name.indexOf('30 Days') > -1 && days.length === 0) {
+                    return value.indexOf(order) > -1;
+                } else if (name.indexOf('Days') > -1) {
+                    return name === '30 Days' && days.includes('30') || name === '90 Days' && days.includes('90');
+                } else return true;
+            });
+            return headers;
+        }
+    }
 
     // prepeareTableData = () => {
     //     //get data from backend
@@ -73,10 +76,11 @@ class Table extends Component {
 
     render() {
         const { pinned, headers, rows, checked } = this.state;
+        const { days = [], order =  '' } = this.props;
         return (
             <Fragment>
-                <Header headers={headers} pinned={pinned} isPinned={this.isPinned} />
-                { Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={headers} pinned={pinned} />)}
+                <Header headers={this.getHeaders(headers, days, order)} pinned={pinned} isPinned={this.isPinned} />
+                { Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={this.getHeaders(headers, days, order)} pinned={pinned} />)}
             </Fragment>
         );
     }

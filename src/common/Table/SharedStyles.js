@@ -84,6 +84,7 @@ const MaindataContainer = styled.div `
     padding-left: 28px;
     padding-right: 28px;
     width: 97%;
+    height: 88vh;
 `;
 
 const RowCheckbox = styled.div `

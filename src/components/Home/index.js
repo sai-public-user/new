@@ -41,7 +41,8 @@ class Home extends Component {
         super(props);
         this.state = {
             days: [],
-            filterType: ''
+            filterType: '',
+            order: 'Retail Order',
         }
     }
 
@@ -52,7 +53,7 @@ class Home extends Component {
         } else {
             days.push(value);
         }
-        this.setState({ days });
+        this.setState({ days, order: '' });
     }
 
 
@@ -63,7 +64,7 @@ class Home extends Component {
     };
 
     render() {
-        const { days = [], filterType } = this.state;
+        const { days = [], filterType, order } = this.state;
         const { classes } = this.props;
         const { benifit: { refs: { table: { state: { headers = [] } = {} } = {} } = {} } = {} } = this.refs || {};
         let filterHeaderNames = [];
@@ -82,6 +83,7 @@ class Home extends Component {
         filterLeft = filterHeaderNames.length > 10 && filterLeft.splice(0,10);
         let filterRight = filterHeaderNames.map(one=>one);
         filterRight = filterHeaderNames.length > 10 && filterRight.splice(10);
+
         return ( 
             <Fragment>
                 <Header>
@@ -124,7 +126,7 @@ class Home extends Component {
                 </Header>
                 <MaindataContainer>
                   <TableContainer>
-                    <BenefitStructure ref="benifit"/>
+                    <BenefitStructure ref="benifit" days={days} order={order} />
                   </TableContainer>
                 </MaindataContainer>
                 <SwipeableDrawer

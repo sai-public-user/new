@@ -139,6 +139,11 @@ const SwitchText = styled.div `
     font-weight: 500;
 `;
 
+const SwitchDrawerText = styled.div `
+    color: #000 !important;
+    font-weight: 500;
+`;
+
 const TableFilterIcon = styled.span `
     cursor: pointer;
 `;
@@ -174,7 +179,7 @@ const FilterCell = styled.div `
 
 const TableContainer = styled.div `
     flex-direction: column;
-    overflow-x: scroll;
+    overflow-x: scroll !important;
     border-radius: 4px;
     overflow-y: scroll;
     height: -webkit-fill-available;
@@ -182,6 +187,15 @@ const TableContainer = styled.div `
 
 const HeaderParent = styled.div `
     font-size: 10px;
+`;
+
+const Rows = styled.div `
+    overflow-y: scroll;
+    height: -webkit-fill-available;
+`;
+
+const HeaderData = styled.div `
+    overflow: hidden;
 `;
 
 export default {
@@ -205,4 +219,7 @@ export default {
     FilterHeaderPaper,
     TableContainer,
     HeaderParent,
+    SwitchDrawerText,
+    Rows,
+    HeaderData,
 };

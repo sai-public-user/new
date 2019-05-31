@@ -34,15 +34,15 @@ const {
     FilterCell,
     FilterHeaderPaper,
     TableContainer,
+    SwitchDrawerText,
 } = Styles.default;
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            days: [],
+            days: [ 'Retail Order', '30 Days' ],
             filterType: '',
-            order: 'Retail Order',
         }
     }
 
@@ -64,7 +64,7 @@ class Home extends Component {
     };
 
     render() {
-        const { days = [], filterType, order } = this.state;
+        const { days = [], filterType } = this.state;
         const { classes } = this.props;
         const { benifit: { refs: { table: { state: { headers = [] } = {} } = {} } = {} } = {} } = this.refs || {};
         let filterHeaderNames = [];
@@ -77,8 +77,8 @@ class Home extends Component {
           } else filterHeaderNames.push(name); 
           return true;
         });
-        filterHeaderNames = JSON.parse(JSON.stringify(filterHeaderNames).replace(/PT:/g, 'Preferred Tier ').replace(/ST:/g, 'Standard Tier '));
 
+        filterHeaderNames = JSON.parse(JSON.stringify(filterHeaderNames).replace(/PT:/g, 'Preferred Tier ').replace(/ST:/g, 'Standard Tier '));
         let filterLeft = filterHeaderNames.map(one=>one);
         filterLeft = filterHeaderNames.length > 10 && filterLeft.splice(0,10);
         let filterRight = filterHeaderNames.map(one=>one);
@@ -93,9 +93,9 @@ class Home extends Component {
                             <FormControlLabel
                               control={
                                 <Switch
-                                  checked={days.includes("30")}
+                                  checked={days.includes("30 Days")}
                                   onChange={this.handleSwitchChange}
-                                  value="30"
+                                  value="30 Days"
                                   classes={{
                                     switchBase: classes.colorSwitchBase,
                                     checked: classes.colorChecked,
@@ -108,9 +108,9 @@ class Home extends Component {
                             <FormControlLabel
                               control={
                                 <Switch
-                                  checked={days.includes("90")}
+                                  checked={days.includes("90 Days")}
                                   onChange={this.handleSwitchChange}
-                                  value="90"
+                                  value="90 Days"
                                   classes={{
                                     switchBase: classes.colorSwitchBase,
                                     checked: classes.colorChecked,
@@ -126,7 +126,7 @@ class Home extends Component {
                 </Header>
                 <MaindataContainer>
                   <TableContainer>
-                    <BenefitStructure ref="benifit" days={days} order={order} />
+                    <BenefitStructure ref="benifit" days={days} />
                   </TableContainer>
                 </MaindataContainer>
                 <SwipeableDrawer
@@ -137,6 +137,72 @@ class Home extends Component {
                   <FilterContent>
                     {filterType === 'column' && (
                       <FilterContentBlock>
+                        <FormGroup row>
+                          <FormGroup column>
+                              <FormControlLabel
+                                control={
+                                  <Switch
+                                    checked={days.includes("30 Days")}
+                                    onChange={this.handleSwitchChange}
+                                    value="30 Days"
+                                    classes={{
+                                      switchBase: classes.colorSwitchBase,
+                                      checked: classes.colorChecked,
+                                      bar: classes.colorBar,
+                                    }}
+                                  />
+                                }
+                                label={<SwitchDrawerText>30 Days</SwitchDrawerText>}
+                              />
+                              <FormControlLabel
+                                control={
+                                  <Switch
+                                    checked={days.includes("90 Days")}
+                                    onChange={this.handleSwitchChange}
+                                    value="90 Days"
+                                    classes={{
+                                      switchBase: classes.colorSwitchBase,
+                                      checked: classes.colorChecked,
+                                      bar: classes.colorBar,
+                                    }}
+                                  />
+                                }
+                                label={<SwitchDrawerText>90 Days</SwitchDrawerText>}
+                              />
+                          </FormGroup>
+                          <FormGroup column>
+                              <FormControlLabel
+                                control={
+                                  <Switch
+                                    checked={days.includes("Mail Order")}
+                                    onChange={this.handleSwitchChange}
+                                    value="Mail Order"
+                                    classes={{
+                                      switchBase: classes.colorSwitchBase,
+                                      checked: classes.colorChecked,
+                                      bar: classes.colorBar,
+                                    }}
+                                  />
+                                }
+                                label={<SwitchDrawerText>Mail Order</SwitchDrawerText>}
+                              />
+                              <FormControlLabel
+                                control={
+                                  <Switch
+                                    checked={days.includes("Retail Order")}
+                                    onChange={this.handleSwitchChange}
+                                    value="Retail Order"
+                                    classes={{
+                                      switchBase: classes.colorSwitchBase,
+                                      checked: classes.colorChecked,
+                                      bar: classes.colorBar,
+                                    }}
+                                  />
+                                }
+                                label={<SwitchDrawerText>Retail</SwitchDrawerText>}
+                              />
+                          </FormGroup>
+                        </FormGroup>
                         <b>Table Columns Selection</b>
                         <FilterHeaderPaper>
                           <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
@@ -154,7 +220,7 @@ class Home extends Component {
                     )}
                     {filterType === 'search' && (
                       <FilterContentBlock>
-                        data come here
+                        data comes here
                       </FilterContentBlock>
                     )}
                   </FilterContent>

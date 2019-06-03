@@ -25,7 +25,7 @@ function Header(props) {
                 // if (value.indexOf('Mail Order') !== -1 || value.indexOf('Retail Order') !== -1) console.log(value);
                 return (
                     <HeaderCell className={`${pinned.includes(value) ? 'pinned_cell' : ''}`} key={value} name={value}>
-                        {value.indexOf('Mail Order') !== -1 || value.indexOf('Retail Order') !== -1 ? (<Headername><HeaderParent>{value}</HeaderParent><hr /><div>{name}</div></Headername>) : null}
+                        {value.indexOf('Mail Order') !== -1 || value.indexOf('Retail Order') !== -1 ? (<Headername><HeaderParent>{value.replace(' - 30', '').replace(' - 90', '')}</HeaderParent><hr /><div>{name}</div></Headername>) : null}
                         {value.indexOf('Mail Order') === -1 && value.indexOf('Retail Order') === -1 && (<Headername>{name}</Headername>)}
                         <HeaderPin className={`${pinned.includes(value) ? 'text-info' : ''}`} name={value} onClick={isPinned}><i className="fa fa-thumb-tack" aria-hidden="true" /></HeaderPin>
                     </HeaderCell>

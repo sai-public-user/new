@@ -14,7 +14,7 @@ class BenefitStructure extends Component {
     render() {
         const { days, order } = this.props;
         return ( 
-            <FormGroup row>
+            <FormGroup>
                 {/* <Table ref="pintable" /> */}
                 <Table ref="table" days={days} Data={Data} order={order} />
             </FormGroup>

@@ -16,7 +16,6 @@ function Row(props) {
         checked = [], checkBoxChange,
     } = props;
     const headerVals = Array.isArray(headers) && headers.map(({ value ='' }) => value) || [];
-    // console.log(headerVals, row);
     return (
         <TableRow>
             <RowCheckbox>

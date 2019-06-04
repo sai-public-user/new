@@ -172,6 +172,9 @@ const FilterCell = styled.div `
     text-transform: capitalize;
     text-overflow: ellipsis;
     overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     &:hover {
         background: #b9e2f5;
     }
@@ -198,6 +201,9 @@ const HeaderData = styled.div `
     overflow: hidden;
 `;
 
+const HeaderCheck = styled.div `
+`;
+
 export default {
     TableHeader,
     Headername,
@@ -222,4 +228,5 @@ export default {
     SwitchDrawerText,
     Rows,
     HeaderData,
+    HeaderCheck,
 };

@@ -1,9 +1,9 @@
 const row = {
   "id": '',
   "county": "Alachua County",
-  "plane_code": "H1032-124-0",
+  "plan_code": "H1032-124-0",
   "organization_name": "WellCare",
-  "plane_name": "WellCare Access (HMO SNP)",
+  "plan_name": "WellCare Access (HMO SNP)",
   "product_type": "SNP",
   "monthly_premium": "0",
   "annual_drug_deductible": "414",
@@ -63,9 +63,9 @@ for(let i = 0; i < 20; i++) {
 const Data = {
     headers: [
       { name: "County", value: "county" },
-      { name: "Plan Code", value: "plane_code" },
+      { name: "Plan Code", value: "plan_code" },
       { name: "Organization Name", value: "organization_name" },
-      { name: "Plan Name", value: "plane_name" },
+      { name: "Plan Name", value: "plan_name" },
       { name: "Product Type", value: "product_type" },
       { name: "Monthly Premium", value: "monthly_premium" },
       { name: "Annual Drug Deductible", value: "annual_drug_deductible" },

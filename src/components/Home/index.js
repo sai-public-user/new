@@ -35,6 +35,7 @@ const {
     FilterHeaderPaper,
     TableContainer,
     SwitchDrawerText,
+    HeaderCheck,
 } = Styles.default;
 
 class Home extends Component {
@@ -43,6 +44,8 @@ class Home extends Component {
         this.state = {
             days: [ 'Retail Order', '30 Days' ],
             filterType: '',
+            excludeHeaders: [],
+            exHeadersNames: [],
         }
     }
 
@@ -63,8 +66,23 @@ class Home extends Component {
       });
     };
 
+    filterHeaderClick = ({ currentTarget } = {}) => {
+      let name = currentTarget.getAttribute('name');
+      if (name !== null) {
+        let { excludeHeaders = [], exHeadersNames = [] } = this.state;
+        if (exHeadersNames.includes(name)) exHeadersNames = exHeadersNames.filter(one => one !== name);
+        else exHeadersNames.push(name);
+        if(name.indexOf('Preferred Tier ') > -1) name = name.replace('Preferred Tier ', 'PT:');
+        else if(name.indexOf('Standard Tier ') > -1) name = name.replace('Standard Tier ', 'ST:');
+        else name = name.toLowerCase().replace(/ /g, '_');
+        if (excludeHeaders.includes(name)) excludeHeaders = excludeHeaders.filter(one => one !== name);
+        else excludeHeaders.push(name);
+        this.setState({ excludeHeaders, exHeadersNames });
+      }
+    }
+
     render() {
-        const { days = [], filterType } = this.state;
+        const { days = [], filterType, excludeHeaders, exHeadersNames } = this.state;
         const { classes } = this.props;
         const { benifit: { refs: { table: { state: { headers = [] } = {} } = {} } = {} } = {} } = this.refs || {};
         let filterHeaderNames = [];
@@ -126,7 +144,7 @@ class Home extends Component {
                 </Header>
                 <MaindataContainer>
                   <TableContainer>
-                    <BenefitStructure ref="benifit" days={days} />
+                    <BenefitStructure ref="benifit" days={days} exclude={excludeHeaders} />
                   </TableContainer>
                 </MaindataContainer>
                 <SwipeableDrawer
@@ -207,12 +225,12 @@ class Home extends Component {
                         <FilterHeaderPaper>
                           <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
                             {
-                              Array.isArray(filterLeft) && filterLeft.map(name => <FilterCell>{name}</FilterCell>)
+                              Array.isArray(filterLeft) && filterLeft.map(name => <FilterCell name={name} onClick={this.filterHeaderClick}><div>{name}</div>{!exHeadersNames.includes(name) && <HeaderCheck><i className="fa fa-check" aria-hidden="true" /></HeaderCheck>}</FilterCell>)
                             }
                           </Paper>
                           <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
                             {
-                              Array.isArray(filterRight) && filterRight.map(name => <FilterCell>{name}</FilterCell>)
+                              Array.isArray(filterRight) && filterRight.map(name => <FilterCell name={name} onClick={this.filterHeaderClick}><div>{name}</div>{!exHeadersNames.includes(name) && <HeaderCheck><i className="fa fa-check" aria-hidden="true" /></HeaderCheck>}</FilterCell>)
                             }
                           </Paper>
                         </FilterHeaderPaper>

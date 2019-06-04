@@ -46,9 +46,11 @@ class Table extends Component {
     }
 
     getHeaders = (tableCols, days = [], order = '') => {
+        const { exclude } = this.props;
         if(tableCols.length > 0) {
             const headers = tableCols.filter(({ name, value }) => {
                 const valueData = value.indexOf(' - ') > -1 ? value.split(' - ')[0] : value;
+                if(exclude.includes(value.indexOf(' - ') > -1 ? value.split(' - ')[1] : value)) return false;
                 if (Array.isArray(days) && days.includes(name) && days.includes(valueData)) {
                     return value.indexOf(order) > -1;
                 } else if(name.indexOf('Days') === -1) return true;

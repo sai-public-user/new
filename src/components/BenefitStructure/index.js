@@ -15,8 +15,7 @@ class BenefitStructure extends Component {
         const { days, order, exclude } = this.props;
         return ( 
             <FormGroup>
-                {/* <Table ref="pintable" /> */}
-                <Table ref="table" days={days} Data={Data} order={order} exclude={exclude} />
+                <Table ref="table" hasPinnedColumns days={days} Data={Data} order={order} exclude={exclude} />
             </FormGroup>
          );
     }

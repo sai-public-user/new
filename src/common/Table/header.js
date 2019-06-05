@@ -16,15 +16,14 @@ const windowRestorSvg = () => (
 )
 
 function Header(props) {
-    const { pinned = [], headers = [], isPinned } = props;
+    const { pinned = [], headers = [], isPinned, hasPinnedColumns } = props;
     return (
         <TableHeader>
             <CompareIcon>{windowRestorSvg()}</CompareIcon>
             {headers.map(col => {
                 const { name = '', value = '' } = col;
-                // if (value.indexOf('Mail Order') !== -1 || value.indexOf('Retail Order') !== -1) console.log(value);
                 return (
-                    <HeaderCell className={`${pinned.includes(value) ? 'pinned_cell' : ''}`} key={value} name={value}>
+                    <HeaderCell key={value} name={value}>
                         {value.indexOf('Mail Order') !== -1 || value.indexOf('Retail Order') !== -1 ? (<Headername><HeaderParent>{value.replace(' - 30', '').replace(' - 90', '')}</HeaderParent><hr /><div>{name}</div></Headername>) : null}
                         {value.indexOf('Mail Order') === -1 && value.indexOf('Retail Order') === -1 && (<Headername>{name}</Headername>)}
                         <HeaderPin className={`${pinned.includes(value) ? 'text-info' : ''}`} name={value} onClick={isPinned}><i className="fa fa-thumb-tack" aria-hidden="true" /></HeaderPin>

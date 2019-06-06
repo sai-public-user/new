@@ -16,17 +16,21 @@ const windowRestorSvg = () => (
 )
 
 function Header(props) {
-    const { pinned = [], headers = [], isPinned, hasPinnedColumns } = props;
+    const { pinned = [], headers = [], isPinned, hasPinnedColumns, pinnedRow } = props;
     return (
         <TableHeader>
-            <CompareIcon>{windowRestorSvg()}</CompareIcon>
+            {
+                (Array.isArray(pinned) && pinned.length > 0 && pinnedRow) ||
+                (!pinnedRow && Array.isArray(pinned) && pinned.length === 0) ? 
+                (<CompareIcon>{windowRestorSvg()}</CompareIcon>) : null
+            }
             {headers.map(col => {
                 const { name = '', value = '' } = col;
                 return (
                     <HeaderCell key={value} name={value}>
                         {value.indexOf('Mail Order') !== -1 || value.indexOf('Retail Order') !== -1 ? (<Headername><HeaderParent>{value.replace(' - 30', '').replace(' - 90', '')}</HeaderParent><hr /><div>{name}</div></Headername>) : null}
                         {value.indexOf('Mail Order') === -1 && value.indexOf('Retail Order') === -1 && (<Headername>{name}</Headername>)}
-                        <HeaderPin className={`${pinned.includes(value) ? 'text-info' : ''}`} name={value} onClick={isPinned}><i className="fa fa-thumb-tack" aria-hidden="true" /></HeaderPin>
+                        {hasPinnedColumns && (<HeaderPin className={`${pinned.includes(value) ? 'text-info' : ''}`} name={value} onClick={isPinned}><i className="fa fa-thumb-tack" aria-hidden="true" /></HeaderPin>)}
                     </HeaderCell>
                 );
             })}

@@ -68,7 +68,9 @@ class Home extends Component {
 
     filterHeaderClick = ({ currentTarget } = {}) => {
       let name = currentTarget.getAttribute('name');
+      const { benifit: { refs: { table: { state: { pinned = [] } = {} } = {} } = {} } = {} } = this.refs || {};
       if (name !== null) {
+        if (pinned.includes(name.toLowerCase().replace(/ /g,'_'))) return;
         let { excludeHeaders = [], exHeadersNames = [] } = this.state;
         if (exHeadersNames.includes(name)) exHeadersNames = exHeadersNames.filter(one => one !== name);
         else exHeadersNames.push(name);
@@ -84,7 +86,7 @@ class Home extends Component {
     render() {
         const { days = [], filterType, excludeHeaders, exHeadersNames } = this.state;
         const { classes } = this.props;
-        const { benifit: { refs: { table: { state: { headers = [] } = {} } = {} } = {} } = {} } = this.refs || {};
+        const { benifit: { refs: { table: { state: { headers = [], pinned = [] } = {} } = {} } = {} } = {} } = this.refs || {};
         let filterHeaderNames = [];
         const filterHeaders = headers.filter(({ name, value }) => {
           if (value.indexOf(' - ') > -1) {
@@ -225,12 +227,28 @@ class Home extends Component {
                         <FilterHeaderPaper>
                           <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
                             {
-                              Array.isArray(filterLeft) && filterLeft.map(name => <FilterCell name={name} onClick={this.filterHeaderClick}><div>{name}</div>{!exHeadersNames.includes(name) && <HeaderCheck><i className="fa fa-check" aria-hidden="true" /></HeaderCheck>}</FilterCell>)
+                              Array.isArray(filterLeft) && filterLeft.map(name =>
+                                <FilterCell name={name} onClick={this.filterHeaderClick} style={{ color: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '#777': 'black'}`, cursor: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '' : 'pointer'}` }}>
+                                  <div>{name}</div>
+                                  {!exHeadersNames.includes(name) &&
+                                  <HeaderCheck>
+                                    <i className="fa fa-check" aria-hidden="true" />
+                                  </HeaderCheck>}
+                                </FilterCell>
+                              )
                             }
                           </Paper>
                           <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
                             {
-                              Array.isArray(filterRight) && filterRight.map(name => <FilterCell name={name} onClick={this.filterHeaderClick}><div>{name}</div>{!exHeadersNames.includes(name) && <HeaderCheck><i className="fa fa-check" aria-hidden="true" /></HeaderCheck>}</FilterCell>)
+                              Array.isArray(filterRight) && filterRight.map(name => 
+                                <FilterCell name={name} onClick={this.filterHeaderClick} style={{ color: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '#777': 'black'}`, cursor: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '' : 'pointer'}` }}>
+                                  <div>{name}</div>
+                                    {!exHeadersNames.includes(name) && 
+                                    <HeaderCheck>
+                                      <i className="fa fa-check" aria-hidden="true" />
+                                    </HeaderCheck>}
+                                </FilterCell>
+                              )
                             }
                           </Paper>
                         </FilterHeaderPaper>

@@ -24,6 +24,7 @@ const CompareIcon = styled.div `
     height: 48px;
     display: flex;
     justify-content: center;
+    cursor: pointer;
 `;
 
 const HeaderCell = styled.div `

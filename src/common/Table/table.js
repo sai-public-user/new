@@ -16,8 +16,9 @@ class Table extends Component {
             headers: [],
             rows: [],
             pinned: [],
-						checked: [],
-						maxPinnedcols: 4,
+			checked: [],
+            maxPinnedcols: 4,
+            pinnedHeaders: [],
         };
     }
 
@@ -27,14 +28,17 @@ class Table extends Component {
     }
 
     isPinned = (e) => {
-				let { pinned = [], maxPinnedcols } = this.state;
+		let { pinned = [], maxPinnedcols, headers } = this.state;
         if (pinned.includes(e.currentTarget.getAttribute('name'))) {
             pinned = pinned.filter(one => one != e.currentTarget.getAttribute('name'))
         } else {
             pinned.push(e.currentTarget.getAttribute('name'));
-				}
-				if (Array.isArray(pinned) && pinned.length > maxPinnedcols) return;
-        this.setState({ pinned });
+		}
+		if (Array.isArray(pinned) && pinned.length > maxPinnedcols) return;
+        this.setState({ pinned }, () => {
+            const pinnedHeaders = Array.isArray(pinned) && headers.filter(one => pinned.includes(one.value));
+            this.setState({ pinnedHeaders });
+        });
     }
 
     rowCheckBoxChange = ({ target: { name = "" } = {} }) => {
@@ -64,23 +68,22 @@ class Table extends Component {
     }
 
     render() {
-        const { pinned, headers, rows, checked } = this.state;
-				const { days = [], hasPinnedColumns } = this.props;
-				const pinnedHeaders = Array.isArray(pinned) && headers.filter(one => pinned.includes(one.value));
+        const { pinned, headers, rows, checked, pinnedHeaders } = this.state;
+		const { days = [], hasPinnedColumns } = this.props;
         return (
-            <div style={{	display: 'flex', flexWrap: 'wrap'	}}>
+            <div style={{	display: 'flex', flexWrap: 'wrap', maxHeight: '100vh'}}>
                 {hasPinnedColumns && pinnedHeaders.length > 0 && (
                     <div style={{ minWidth: `${pinnedHeaders.length * 15}%` }}>
-                      <Header headers={pinnedHeaders} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} />
+                      <Header headers={pinnedHeaders} hasPinnedColumns pinned={pinned} pinnedRow isPinned={this.isPinned} />
                       <Fragment>
-                          {Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} pinnedRow checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={pinnedHeaders} />)}
+                          {Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} pinnedRow pinned={pinned} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={pinnedHeaders} />)}
                       </Fragment>
                   	</div>
-								)}
-								<div className="mainTable" style={{ minWidth: `${100 - pinnedHeaders.length * 15}%`, overflowX: 'scroll' }}>
-                	<Header headers={this.getHeaders(headers, days)} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} />
-									{ Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={this.getHeaders(headers, days)} pinned={pinned} />)}
-								</div>
+			    )}
+			    <div className="mainTable" style={{ minWidth: `${100 - pinnedHeaders.length * 15}%`, overflowX: 'scroll' }}>
+                    <Header headers={this.getHeaders(headers, days)} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} />
+			    	{ Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={this.getHeaders(headers, days)} pinned={pinned} />)}
+			    </div>
             </div>
         );
     }

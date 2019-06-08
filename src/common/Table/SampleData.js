@@ -55,7 +55,7 @@ const row = {
 const rows = [];
 
 for(let i = 0; i < 20; i++) {
-  let data = row;
+  let data = {...row};
   data.id = i;
   rows.push(data);
 } 

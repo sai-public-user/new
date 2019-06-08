@@ -3,6 +3,8 @@ import Header from './header';
 import Row from './row';
 import './table.css';
 import * as Styles from '../../common/Table/SharedStyles';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog'
 
 const {
     Rows,
@@ -17,8 +19,11 @@ class Table extends Component {
             rows: [],
             pinned: [],
 			checked: [],
-            maxPinnedcols: 4,
+            maxPinnedcols: 5,
             pinnedHeaders: [],
+            compareLimit: 5,
+            compareRows: [],
+            showCmpDialog: false,
         };
     }
 
@@ -42,18 +47,19 @@ class Table extends Component {
     }
 
     rowCheckBoxChange = ({ target: { name = "" } = {} }) => {
-        let { checked = [] } = this.state;
+        let { checked = [], compareLimit = 2 } = this.state;
         if (checked.includes(Number(name))) {
             checked = checked.filter(one => one != Number(name))
         } else {
             checked.push(Number(name));
         }
+        if( checked.length > compareLimit ) return;
         this.setState({ checked });
     }
 
     getHeaders = (tableCols, days = [], order = '') => {
-				const { exclude } = this.props;
-				const { pinned } = this.state;
+		const { exclude } = this.props;
+		const { pinned } = this.state;
         if(tableCols.length > 0) {
             const headers = tableCols.filter(({ name, value }) => {
 								if (Array.isArray(pinned) && pinned.includes(value)) return false;
@@ -67,23 +73,43 @@ class Table extends Component {
         }
     }
 
+    compareClicked = () => {
+        const { checked, rows } = this.state;
+        const compareRows = rows.filter(({ id }) => checked.includes(id));
+        console.log(compareRows);
+        this.setState({ compareRows, showCmpDialog: true })
+    }
+
     render() {
-        const { pinned, headers, rows, checked, pinnedHeaders } = this.state;
-		const { days = [], hasPinnedColumns } = this.props;
+        const {
+            pinned, headers,
+            rows, checked,
+            pinnedHeaders, compareRows,
+            showCmpDialog,
+        } = this.state;
+        const { days = [], hasPinnedColumns } = this.props;
         return (
             <div style={{	display: 'flex', flexWrap: 'wrap', maxHeight: '100vh'}}>
                 {hasPinnedColumns && pinnedHeaders.length > 0 && (
                     <div style={{ minWidth: `${pinnedHeaders.length * 15}%` }}>
-                      <Header headers={pinnedHeaders} hasPinnedColumns pinned={pinned} pinnedRow isPinned={this.isPinned} />
+                      <Header headers={pinnedHeaders} compare={this.compareClicked} hasPinnedColumns pinned={pinned} pinnedRow isPinned={this.isPinned} />
                       <Fragment>
                           {Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} pinnedRow pinned={pinned} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={pinnedHeaders} />)}
                       </Fragment>
                   	</div>
 			    )}
 			    <div className="mainTable" style={{ minWidth: `${100 - pinnedHeaders.length * 15}%`, overflowX: 'scroll' }}>
-                    <Header headers={this.getHeaders(headers, days)} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} />
+                    <Header headers={this.getHeaders(headers, days)} compare={this.compareClicked} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} />
 			    	{ Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={this.getHeaders(headers, days)} pinned={pinned} />)}
 			    </div>
+                <Dialog open={showCmpDialog} onClose={() => this.setState({ showCmpDialog: false })} >
+                    <DialogTitle id="simple-dialog-title">Comparison View</DialogTitle>
+                    <div style={{ padding: '1rem' }}>
+                        {
+                            compareRows.map(one=><div style={{ marginBottom: '0.5rem' }}>{JSON.stringify(one)}</div>)
+                        }
+                    </div>
+                </Dialog>
             </div>
         );
     }

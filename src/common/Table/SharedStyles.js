@@ -34,9 +34,9 @@ const HeaderCell = styled.div `
     align-content: center;
     flex-basis: 0;
     flex-grow: 1;
-    max-width: 242px;
+    max-width: 260px;
     position: relative;
-    width: 242px;
+    width: 260px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -122,9 +122,9 @@ const TableRowCell = styled.div `
     align-content: center !important;
     flex-basis: 0;
     flex-grow: 1;
-    max-width: 242px;
+    max-width: 260px;
     position: relative;
-    width: 242px;
+    width: 260px;
     display: flex;
     flex-wrap: wrap;
     min-height: 52px;
@@ -196,13 +196,21 @@ const HeaderParent = styled.div `
 const Rows = styled.div `
     overflow-y: scroll;
     height: -webkit-fill-available;
+    overflow-x: visible;
 `;
 
 const HeaderData = styled.div `
-    overflow: hidden;
+    overflow-x: visible;
+    overflow-y: hidden;
 `;
 
 const HeaderCheck = styled.div `
+`;
+
+const SortIcon = styled.div `
+    margin-left: 0.5rem;
+    align-items: center;
+    display: flex;
 `;
 
 export default {
@@ -230,4 +238,5 @@ export default {
     Rows,
     HeaderData,
     HeaderCheck,
+    SortIcon,
 };

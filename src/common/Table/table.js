@@ -24,6 +24,7 @@ class Table extends Component {
             compareLimit: 5,
             compareRows: [],
             showCmpDialog: false,
+            sortedCol: {},
         };
     }
 
@@ -80,27 +81,50 @@ class Table extends Component {
         this.setState({ compareRows, showCmpDialog: true })
     }
 
+    sortOrder = (row1, row2, type, value) => {
+        if (type === 'asc') {
+            if (row1[value] < row2[value]) return -1;
+            else if(row1[value] > row2[value]) return 1;
+            return 0;
+        }
+        else {
+            if (row1[value] > row2[value]) return -1;
+            else if(row1[value] < row2[value]) return 1;
+            return 0;
+        }
+    }
+
+    onCellClick = (value) => {
+        let { sortedCol = {}, rows } = this.state;
+        if (sortedCol && Object.keys(sortedCol).length > 0 && !sortedCol.hasOwnProperty(value)) sortedCol = {};
+        if (sortedCol.hasOwnProperty(value) && sortedCol[value] === 'asc') sortedCol[value] = 'desc'
+        else sortedCol[value] = 'asc';
+        rows.sort((row1, row2) => this.sortOrder(row1, row2, sortedCol[value], value));
+        this.setState({ sortedCol, rows });
+    }
+
     render() {
         const {
             pinned, headers,
             rows, checked,
             pinnedHeaders, compareRows,
             showCmpDialog,
+            sortedCol,
         } = this.state;
         const { days = [], hasPinnedColumns } = this.props;
         return (
             <div style={{	display: 'flex', flexWrap: 'wrap', maxHeight: '100vh'}}>
                 {hasPinnedColumns && pinnedHeaders.length > 0 && (
                     <div style={{ minWidth: `${pinnedHeaders.length * 15}%` }}>
-                      <Header headers={pinnedHeaders} compare={this.compareClicked} hasPinnedColumns pinned={pinned} pinnedRow isPinned={this.isPinned} />
+                      <Fragment><Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={pinnedHeaders} compare={this.compareClicked} hasPinnedColumns pinned={pinned} pinnedRow isPinned={this.isPinned} /></Fragment>
                       <Fragment>
                           {Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} pinnedRow pinned={pinned} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={pinnedHeaders} />)}
                       </Fragment>
                   	</div>
 			    )}
 			    <div className="mainTable" style={{ minWidth: `${100 - pinnedHeaders.length * 15}%`, overflowX: 'scroll' }}>
-                    <Header headers={this.getHeaders(headers, days)} compare={this.compareClicked} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} />
-			    	{ Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={this.getHeaders(headers, days)} pinned={pinned} />)}
+                    <Fragment><Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={this.getHeaders(headers, days)} compare={this.compareClicked} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} /></Fragment>
+			    	<Fragment>{ Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={this.getHeaders(headers, days)} pinned={pinned} />)}</Fragment>
 			    </div>
                 <Dialog open={showCmpDialog} onClose={() => this.setState({ showCmpDialog: false })} >
                     <DialogTitle id="simple-dialog-title">Comparison View</DialogTitle>

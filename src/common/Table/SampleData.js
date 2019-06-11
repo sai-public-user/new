@@ -57,6 +57,8 @@ const rows = [];
 for(let i = 0; i < 20; i++) {
   let data = {...row};
   data.id = i;
+  data.monthly_premium = i + 1;
+  data.current_enrollees = i + 1 * i;
   rows.push(data);
 } 
 

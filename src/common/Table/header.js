@@ -9,6 +9,7 @@ const {
     HeaderCell,
     HeaderPin,
     HeaderParent,
+    SortIcon,
 } = Styles.default;
 
 const windowRestorSvg = (compare) => (
@@ -19,7 +20,8 @@ function Header(props) {
     const {
         pinned = [], headers = [],
         isPinned, hasPinnedColumns,
-        pinnedRow, compare,
+        pinnedRow, compare, sortedCol,
+        onCellClick,
     } = props;
     return (
         <TableHeader>
@@ -31,10 +33,11 @@ function Header(props) {
             {headers.map(col => {
                 const { name = '', value = '' } = col;
                 return (
-                    <HeaderCell key={value} name={value}>
+                    <HeaderCell key={value} name={value} onClick={()=>onCellClick(value)}>
                         {value.indexOf('Mail Order') !== -1 || value.indexOf('Retail Order') !== -1 ? (<Headername><HeaderParent>{value.replace(' - 30', '').replace(' - 90', '')}</HeaderParent><hr /><div>{name}</div></Headername>) : null}
                         {value.indexOf('Mail Order') === -1 && value.indexOf('Retail Order') === -1 && (<Headername>{name}</Headername>)}
                         {hasPinnedColumns && (<HeaderPin className={`${pinned.includes(value) ? 'text-info' : ''}`} name={value} onClick={isPinned}><i className="fa fa-thumb-tack" aria-hidden="true" /></HeaderPin>)}
+                        {sortedCol && sortedCol[value] && <SortIcon name={value}>{(sortedCol[value] === 'asc' ? <i class="fa fa-arrow-up" /> : <i class="fa fa-arrow-down" />)}</SortIcon>}
                     </HeaderCell>
                 );
             })}

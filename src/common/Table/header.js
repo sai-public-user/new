@@ -21,19 +21,19 @@ function Header(props) {
         pinned = [], headers = [],
         isPinned, hasPinnedColumns,
         pinnedRow, compare, sortedCol,
-        onCellClick,
+        onCellClick, noCompare
     } = props;
     return (
         <TableHeader>
             {
                 (Array.isArray(pinned) && pinned.length > 0 && pinnedRow) ||
-                (!pinnedRow && Array.isArray(pinned) && pinned.length === 0) ? 
+                (!pinnedRow && Array.isArray(pinned) && pinned.length === 0) && !noCompare ? 
                 (<CompareIcon>{windowRestorSvg(compare)}</CompareIcon>) : null
             }
             {headers.map(col => {
                 const { name = '', value = '' } = col;
                 return (
-                    <HeaderCell key={value} name={value} onClick={()=>onCellClick(value)}>
+                    <HeaderCell key={value} name={value} onClick={()=> onCellClick ? onCellClick(value) : null}>
                         {value.indexOf('Mail Order') !== -1 || value.indexOf('Retail Order') !== -1 ? (<Headername><HeaderParent>{value.replace(' - 30', '').replace(' - 90', '')}</HeaderParent><hr /><div>{name}</div></Headername>) : null}
                         {value.indexOf('Mail Order') === -1 && value.indexOf('Retail Order') === -1 && (<Headername>{name}</Headername>)}
                         {hasPinnedColumns && (<HeaderPin className={`${pinned.includes(value) ? 'text-info' : ''}`} name={value} onClick={isPinned}><i className="fa fa-thumb-tack" aria-hidden="true" /></HeaderPin>)}

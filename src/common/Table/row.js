@@ -14,12 +14,12 @@ function Row(props) {
     const {
         row = {}, headers = null , pinned = [],
         checked = [], checkBoxChange, pinnedRow,
-        name,
+        name, noCompare,
     } = props;
     const headerVals = Array.isArray(headers) && headers.map(({ value ='' }) => value) || [];
     return (
         <TableRow>
-            {(Array.isArray(pinned) && pinned.length > 0 && pinnedRow) || (!pinnedRow && Array.isArray(pinned) && pinned.length === 0) ? (
+            {(Array.isArray(pinned) && pinned.length > 0 && pinnedRow) || (!pinnedRow && Array.isArray(pinned) && pinned.length === 0) && !noCompare ? (
               <RowCheckbox>
                   <FirstCell><Checkbox checked={checked.includes(row.id)} onChange={checkBoxChange} name={`${row.id}`} /></FirstCell>
               </RowCheckbox>

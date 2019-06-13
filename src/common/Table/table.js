@@ -5,6 +5,7 @@ import './table.css';
 import * as Styles from '../../common/Table/SharedStyles';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog'
+import { buildFailureTestResult } from '@jest/test-result';
 
 const {
     Rows,
@@ -77,7 +78,6 @@ class Table extends Component {
     compareClicked = () => {
         const { checked, rows } = this.state;
         const compareRows = rows.filter(({ id }) => checked.includes(id));
-        console.log(compareRows);
         this.setState({ compareRows, showCmpDialog: true })
     }
 
@@ -107,7 +107,8 @@ class Table extends Component {
         const {
             pinned, headers,
             rows, checked,
-            pinnedHeaders, compareRows,
+            pinnedHeaders,
+            compareRows,
             showCmpDialog,
             sortedCol,
         } = this.state;
@@ -127,12 +128,14 @@ class Table extends Component {
 			    	<Fragment>{ Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={this.getHeaders(headers, days)} pinned={pinned} />)}</Fragment>
 			    </div>
                 <Dialog open={showCmpDialog} onClose={() => this.setState({ showCmpDialog: false })} >
-                    <DialogTitle id="simple-dialog-title">Comparison View</DialogTitle>
-                    <div style={{ padding: '1rem' }}>
-                        {
-                            compareRows.map(one=><div style={{ marginBottom: '0.5rem' }}>{JSON.stringify(one)}</div>)
-                        }
-                    </div>
+                    {
+                        Array.isArray(compareRows) && compareRows.length > 1 ? (
+                            <DialogTitle id="simple-dialog-title">
+                              <Fragment><Header headers={headers} noCompare /></Fragment>
+			    	          <Fragment>{ Array.isArray(compareRows) && compareRows.map((row, i) => <Row row={row} key={i} headers={headers} noCompare />)}</Fragment>
+                            </DialogTitle>
+                        ) : (<div>Minimum 2 Rows are required to compare please check more than 1 row to compare</div>)
+                    }
                 </Dialog>
             </div>
         );

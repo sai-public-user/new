@@ -35,15 +35,16 @@ class Table extends Component {
     }
 
     isPinned = (e) => {
-		let { pinned = [], maxPinnedcols, headers } = this.state;
-        if (pinned.includes(e.currentTarget.getAttribute('name'))) {
-            pinned = pinned.filter(one => one != e.currentTarget.getAttribute('name'))
+        const { pinned = [], maxPinnedcols, headers } = this.state;
+        let newPinned = pinned.map(o => o);
+        if (newPinned.includes(e.currentTarget.getAttribute('name'))) {
+            newPinned = newPinned.filter(one => one != e.currentTarget.getAttribute('name'))
         } else {
-            pinned.push(e.currentTarget.getAttribute('name'));
-		}
-		if (Array.isArray(pinned) && pinned.length > maxPinnedcols) return;
-        this.setState({ pinned }, () => {
-            const pinnedHeaders = Array.isArray(pinned) && headers.filter(one => pinned.includes(one.value));
+            newPinned.push(e.currentTarget.getAttribute('name'));
+        }
+        if (Array.isArray(newPinned) && newPinned.length > maxPinnedcols) return;
+        this.setState({ pinned: newPinned }, () => {
+            const pinnedHeaders = Array.isArray(newPinned) && headers.filter(one => newPinned.includes(one.value));
             this.setState({ pinnedHeaders });
         });
     }
@@ -61,10 +62,10 @@ class Table extends Component {
 
     getHeaders = (tableCols, days = [], order = '') => {
 		const { exclude } = this.props;
-		const { pinned } = this.state;
+        const { pinned } = this.state;
         if(tableCols.length > 0) {
             const headers = tableCols.filter(({ name, value }) => {
-								if (Array.isArray(pinned) && pinned.includes(value)) return false;
+				if (Array.isArray(pinned) && pinned.includes(value)) return false;
                 const valueData = value.indexOf(' - ') > -1 ? value.split(' - ')[0] : value;
                 if(exclude.includes(value.indexOf(' - ') > -1 ? value.split(' - ')[1] : value)) return false;
                 if (Array.isArray(days) && days.includes(name) && days.includes(valueData)) {
@@ -113,6 +114,8 @@ class Table extends Component {
             sortedCol,
         } = this.state;
         const { days = [], hasPinnedColumns } = this.props;
+        const filteredHeaders = this.getHeaders(headers, days);
+        const compareHeaders = Array.isArray(filteredHeaders) && Array.isArray(pinnedHeaders) ? filteredHeaders.concat(pinnedHeaders) : [];
         return (
             <div style={{	display: 'flex', flexWrap: 'wrap', maxHeight: '100vh'}}>
                 {hasPinnedColumns && pinnedHeaders.length > 0 && (
@@ -124,17 +127,17 @@ class Table extends Component {
                   	</div>
 			    )}
 			    <div className="mainTable" style={{ minWidth: `${100 - pinnedHeaders.length * 15}%`, overflowX: 'scroll' }}>
-                    <Fragment><Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={this.getHeaders(headers, days)} compare={this.compareClicked} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} /></Fragment>
-			    	<Fragment>{ Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={this.getHeaders(headers, days)} pinned={pinned} />)}</Fragment>
+                    <Fragment><Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={filteredHeaders} compare={this.compareClicked} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} /></Fragment>
+			    	<Fragment>{ Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={filteredHeaders} pinned={pinned} />)}</Fragment>
 			    </div>
                 <Dialog open={showCmpDialog} onClose={() => this.setState({ showCmpDialog: false })} >
                     {
                         Array.isArray(compareRows) && compareRows.length > 1 ? (
-                            <DialogTitle id="simple-dialog-title">
-                              <Fragment><Header headers={headers} noCompare /></Fragment>
-			    	          <Fragment>{ Array.isArray(compareRows) && compareRows.map((row, i) => <Row row={row} key={i} headers={headers} noCompare />)}</Fragment>
-                            </DialogTitle>
-                        ) : (<div>Minimum 2 Rows are required to compare please check more than 1 row to compare</div>)
+                            <div className="dialog-content">
+                              <Fragment><Header headers={compareHeaders} noCompare /></Fragment>
+			    	          <Fragment>{ Array.isArray(compareRows) && compareRows.map((row, i) => <Row row={row} key={i} headers={compareHeaders} noCompare />)}</Fragment>
+                            </div>
+                        ) : (<div style={{ padding: '1rem', textAlign: 'center' }}>Minimum 2 Rows are required to compare please check more than 1 row to compare</div>)
                     }
                 </Dialog>
             </div>

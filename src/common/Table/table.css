@@ -13,3 +13,8 @@
 .header_cell:hover {
     background-color: #6f97db;
 }
+
+div[role=document] :first-child {
+    max-width: 100% !important;
+    flex: 1 !important;
+}

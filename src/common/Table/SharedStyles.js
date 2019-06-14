@@ -5,7 +5,6 @@ const TableHeader =  styled.div `
 min-height: 52px;
 max-height: 52px;
 padding-left: 0.5rem;
-border-radius: 4px;
 background-color: #3c65ab;
 color: white;
 text-transform: uppercase;

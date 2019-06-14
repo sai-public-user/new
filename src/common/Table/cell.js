@@ -6,10 +6,10 @@ const {
 } = Styles.default;
 
 function Cell(props) {
-    const { data = '', isPinnedVal = false, endPosition = -1, name, title } = props;
+    const { data = null, endPosition = -1, name, title } = props;
     return (
         <TableRowCell title={title} className={`${endPosition > 0 ? ' last_cell' : ''}`} name={name}>
-            {data}
+            {data !== null && (data.length > 0 || typeof data === 'number') ? data : '-'}
         </TableRowCell>
     )
 }

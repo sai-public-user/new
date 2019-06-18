@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const TableHeader =  styled.div `
+const TableHeader =  styled.tr `
 min-height: 52px;
 max-height: 52px;
 padding-left: 0.5rem;
@@ -26,7 +26,7 @@ const CompareIcon = styled.div `
     cursor: pointer;
 `;
 
-const HeaderCell = styled.div `
+const HeaderCell = styled.th `
     padding-left: 0.5rem;
     padding: 0;
     margin: 0;
@@ -81,10 +81,9 @@ const MaindataContainer = styled.div `
     position: absolute;
     max-width: 99vw;
     margin-top: 96px;
-    padding-left: 28px;
+    padding-left: 22px;
     padding-right: 28px;
     width: 97%;
-    height: 88vh;
 `;
 
 const RowCheckbox = styled.div `
@@ -103,7 +102,7 @@ const FirstCell = styled.span `
     border-left: 6px solid skyblue;
 `;
 
-const TableRow = styled.div `
+const TableRow = styled.tr `
     max-height: 52px;
     border-radius: 4px;
     font-weight: 400;
@@ -117,7 +116,7 @@ const TableRow = styled.div `
     border-radius: 0.25rem;
 `;
 
-const TableRowCell = styled.div `
+const TableRowCell = styled.td `
     align-content: center !important;
     flex-basis: 0;
     flex-grow: 1;
@@ -184,23 +183,22 @@ const TableContainer = styled.div `
     flex-direction: column;
     overflow-x: scroll !important;
     border-radius: 4px;
-    overflow-y: scroll;
-    height: -webkit-fill-available;
 `;
 
 const HeaderParent = styled.div `
     font-size: 10px;
 `;
 
-const Rows = styled.div `
+const Rows = styled.tbody `
     overflow-y: scroll;
-    height: -webkit-fill-available;
-    overflow-x: visible;
+    height: 65%;
+    overflow-x: hidden;
 `;
 
-const HeaderData = styled.div `
-    overflow-x: visible;
+const HeaderData = styled.thead `
+    overflow-x: hidden;
     overflow-y: hidden;
+    border-radius: 4px;
 `;
 
 const HeaderCheck = styled.div `

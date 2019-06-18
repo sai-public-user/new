@@ -3,13 +3,12 @@ import Header from './header';
 import Row from './row';
 import './table.css';
 import * as Styles from '../../common/Table/SharedStyles';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog'
-import { buildFailureTestResult } from '@jest/test-result';
+import { Dialog, TablePagination } from '@material-ui/core';
 
 const {
     Rows,
     HeaderData,
+    CustomTable,
 } = Styles.default;
 
 class Table extends Component {
@@ -112,35 +111,36 @@ class Table extends Component {
             compareRows,
             showCmpDialog,
             sortedCol,
+            Table,
         } = this.state;
         const { days = [], hasPinnedColumns } = this.props;
         const filteredHeaders = this.getHeaders(headers, days);
         const compareHeaders = Array.isArray(filteredHeaders) && Array.isArray(pinnedHeaders) ? filteredHeaders.concat(pinnedHeaders) : [];
         return (
-            <div style={{	display: 'flex', flexWrap: 'wrap', maxHeight: '100vh'}}>
+            <Fragment>
                 {hasPinnedColumns && pinnedHeaders.length > 0 && (
-                    <div style={{ minWidth: `${pinnedHeaders.length * 15}%` }}>
-                      <Fragment><Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={pinnedHeaders} compare={this.compareClicked} hasPinnedColumns pinned={pinned} pinnedRow isPinned={this.isPinned} /></Fragment>
-                      <Fragment>
+                    <CustomTable style={{ minWidth: `${pinnedHeaders.length * 15}%` }}>
+                      <HeaderData><Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={pinnedHeaders} compare={this.compareClicked} hasPinnedColumns pinned={pinned} pinnedRow isPinned={this.isPinned} /></HeaderData>
+                      <Rows>
                           {Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} pinnedRow pinned={pinned} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={pinnedHeaders} />)}
-                      </Fragment>
-                  	</div>
+                      </Rows>
+                  	</CustomTable>
 			    )}
-			    <div className="mainTable" style={{ minWidth: `${100 - pinnedHeaders.length * 15}%`, overflowX: 'scroll' }}>
-                    <Fragment><Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={filteredHeaders} compare={this.compareClicked} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} /></Fragment>
-			    	<Fragment>{ Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={filteredHeaders} pinned={pinned} />)}</Fragment>
-			    </div>
+			    <CustomTable>
+                    <HeaderData><Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={filteredHeaders} compare={this.compareClicked} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} /></HeaderData>
+			    	<Rows>{ Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={filteredHeaders} pinned={pinned} />)}</Rows>
+			    </CustomTable>
                 <Dialog open={showCmpDialog} onClose={() => this.setState({ showCmpDialog: false })} >
                     {
                         Array.isArray(compareRows) && compareRows.length > 1 ? (
-                            <div className="dialog-content">
-                              <Fragment><Header headers={compareHeaders} noCompare /></Fragment>
-			    	          <Fragment>{ Array.isArray(compareRows) && compareRows.map((row, i) => <Row row={row} key={i} headers={compareHeaders} noCompare />)}</Fragment>
-                            </div>
+                            <CustomTable>
+                              <HeaderData><Header headers={compareHeaders} noCompare /></HeaderData>
+			    	          <Rows>{ Array.isArray(compareRows) && compareRows.map((row, i) => <Row row={row} key={i} headers={compareHeaders} noCompare />)}</Rows>
+                            </CustomTable>
                         ) : (<div style={{ padding: '1rem', textAlign: 'center' }}>Minimum 2 Rows are required to compare please check more than 1 row to compare</div>)
                     }
                 </Dialog>
-            </div>
+            </Fragment>
         );
     }
 }

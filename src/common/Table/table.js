@@ -3,9 +3,7 @@ import Header from './header';
 import Row from './row';
 import './table.css';
 import * as Styles from '../../common/Table/SharedStyles';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog'
-import { buildFailureTestResult } from '@jest/test-result';
+import { Dialog, TablePagination } from '@material-ui/core';
 
 const {
     Rows,
@@ -117,26 +115,26 @@ class Table extends Component {
         const filteredHeaders = this.getHeaders(headers, days);
         const compareHeaders = Array.isArray(filteredHeaders) && Array.isArray(pinnedHeaders) ? filteredHeaders.concat(pinnedHeaders) : [];
         return (
-            <div style={{	display: 'flex', flexWrap: 'wrap', maxHeight: '100vh'}}>
+            <div style={{	display: 'flex', flexWrap: 'wrap', maxHeight: '100%'}}>
                 {hasPinnedColumns && pinnedHeaders.length > 0 && (
                     <div style={{ minWidth: `${pinnedHeaders.length * 15}%` }}>
-                      <Fragment><Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={pinnedHeaders} compare={this.compareClicked} hasPinnedColumns pinned={pinned} pinnedRow isPinned={this.isPinned} /></Fragment>
-                      <Fragment>
+                      <HeaderData><Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={pinnedHeaders} compare={this.compareClicked} hasPinnedColumns pinned={pinned} pinnedRow isPinned={this.isPinned} /></HeaderData>
+                      <Rows>
                           {Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} pinnedRow pinned={pinned} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={pinnedHeaders} />)}
-                      </Fragment>
+                      </Rows>
                   	</div>
 			    )}
-			    <div className="mainTable" style={{ minWidth: `${100 - pinnedHeaders.length * 15}%`, overflowX: 'scroll' }}>
-                    <Fragment><Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={filteredHeaders} compare={this.compareClicked} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} /></Fragment>
-			    	<Fragment>{ Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={filteredHeaders} pinned={pinned} />)}</Fragment>
-			    </div>
+			    <table className="mainTable" style={{ minWidth: `${100 - pinnedHeaders.length * 15}%`, overflowX: 'scroll',  maxHeight: '88vh' }}>
+                        <HeaderData><Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={filteredHeaders} compare={this.compareClicked} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} /></HeaderData>
+			    	    <Rows>{ Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={filteredHeaders} pinned={pinned} />)}</Rows>
+			    </table>
                 <Dialog open={showCmpDialog} onClose={() => this.setState({ showCmpDialog: false })} >
                     {
                         Array.isArray(compareRows) && compareRows.length > 1 ? (
-                            <div className="dialog-content">
+                            <Fragment>
                               <Fragment><Header headers={compareHeaders} noCompare /></Fragment>
 			    	          <Fragment>{ Array.isArray(compareRows) && compareRows.map((row, i) => <Row row={row} key={i} headers={compareHeaders} noCompare />)}</Fragment>
-                            </div>
+                            </Fragment>
                         ) : (<div style={{ padding: '1rem', textAlign: 'center' }}>Minimum 2 Rows are required to compare please check more than 1 row to compare</div>)
                     }
                 </Dialog>

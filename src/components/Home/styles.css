@@ -2,3 +2,8 @@
     color: white !important;
     background-color: #678bca;
 }
+
+.disabled {
+    cursor: no-drop !important;
+    color: #6c757d !important;
+}

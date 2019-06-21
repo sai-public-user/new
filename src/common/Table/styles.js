@@ -18,9 +18,9 @@ const Headername = styled.span `
     font-weight: 650;
 `;
 
-const CompareIcon = styled.th `
-    width: 52px;
-    height: 52px;
+const CompareIcon = styled.div `
+    width: 48px;
+    height: 48px;
     display: flex;
     justify-content: center;
     cursor: pointer;
@@ -33,9 +33,9 @@ const HeaderCell = styled.th `
     align-content: center;
     flex-basis: 0;
     flex-grow: 1;
-    max-width: 262px;
+    max-width: 260px;
     position: relative;
-    width: 262px;
+    width: 260px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -84,10 +84,9 @@ const MaindataContainer = styled.div `
     padding-left: 22px;
     padding-right: 28px;
     width: 97%;
-    max-height: 93%;
 `;
 
-const RowCheckbox = styled.td `
+const RowCheckbox = styled.div `
     background-color: #fff;
     background-clip: border-box;
     border-radius: 0.25rem;
@@ -181,8 +180,9 @@ const FilterCell = styled.div `
 `;
 
 const TableContainer = styled.div `
-    overflow: scroll !important;
-    height: 90vh;
+    flex-direction: column;
+    overflow-x: scroll !important;
+    border-radius: 4px;
 `;
 
 const HeaderParent = styled.div `
@@ -190,9 +190,14 @@ const HeaderParent = styled.div `
 `;
 
 const Rows = styled.tbody `
+    overflow-y: scroll;
+    height: 65%;
+    overflow-x: hidden;
 `;
 
 const HeaderData = styled.thead `
+    overflow-x: hidden;
+    overflow-y: hidden;
     border-radius: 4px;
 `;
 
@@ -203,10 +208,6 @@ const SortIcon = styled.div `
     margin-left: 0.5rem;
     align-items: center;
     display: flex;
-`;
-
-const CustomTable = styled.table `
-    width: 100%;
 `;
 
 export default {
@@ -235,5 +236,4 @@ export default {
     HeaderData,
     HeaderCheck,
     SortIcon,
-    CustomTable,
 };

@@ -241,9 +241,9 @@ class Home extends Component {
                           <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
                             {
                               Array.isArray(filterRight) && filterRight.map(name => 
-                                <FilterCell name={name} onClick={this.filterHeaderClick} style={{ color: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '#777': 'black'}`, cursor: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '' : 'pointer'}` }}>
+                                <FilterCell name={`${Array.isArray(days) && days.length < 2 ? null : name}`} onClick={this.filterHeaderClick} className={`${Array.isArray(days) && days.length < 2 ? 'disabled' : ''}`} style={{ color: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '#777': 'black'}`, cursor: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '' : 'pointer'}` }}>
                                   <div>{name}</div>
-                                    {!exHeadersNames.includes(name) && 
+                                    {!exHeadersNames.includes(name) && (Array.isArray(days) && days.length >= 2) &&
                                     <HeaderCheck>
                                       <i className="fa fa-check" aria-hidden="true" />
                                     </HeaderCheck>}

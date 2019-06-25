@@ -89,10 +89,10 @@ class Home extends Component {
         const { benifit: { refs: { table: { state: { headers = [], pinned = [] } = {} } = {} } = {} } = {} } = this.refs || {};
         let filterHeaderNames = [];
         const filterHeaders = headers.filter(({ name, value }) => {
-          if (value.indexOf(' - ') > -1) {
-            const tierType = value.split(' - ')[1];
+          if (name.indexOf(' - ') > -1) {
+            const tierType = (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '');
             if (filterHeaderNames.includes(tierType)) return false;
-            else filterHeaderNames.push(value.split(' - ')[1]);
+            else filterHeaderNames.push(tierType);
             return true;
           } else filterHeaderNames.push(name); 
           return true;

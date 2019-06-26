@@ -25,6 +25,8 @@ body {
 /* Let's get this party started */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;              /* height of horizontal scrollbar ← You're missing this */
+  border: 1px solid #d5d5d5;
 }
 
 /* Track */

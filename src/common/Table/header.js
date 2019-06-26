@@ -33,9 +33,16 @@ function Header(props) {
             {headers.map(col => {
                 const { name = '', value = '' } = col;
                 return (
-                    <HeaderCell key={value} name={value} onClick={()=> onCellClick ? onCellClick(value) : null}>
-                        {value.indexOf('Mail Order') !== -1 || value.indexOf('Retail Order') !== -1 ? (<Headername><HeaderParent>{value.replace(' - 30', '').replace(' - 90', '')}</HeaderParent><hr /><div>{name}</div></Headername>) : null}
-                        {value.indexOf('Mail Order') === -1 && value.indexOf('Retail Order') === -1 && (<Headername>{name}</Headername>)}
+                    <HeaderCell key={value} name={name} onClick={()=> onCellClick ? onCellClick(value) : null}>
+                        {name.indexOf('Mail Order') !== -1 || name.indexOf('Retail Order') !== -1 ? (
+                            <Headername>
+                                <HeaderParent>{name.replace(' 30 Days', '').replace(' 90 Days', '')}</HeaderParent>
+                                <hr />
+                                <div>{name.indexOf('30 Days') > -1 ? '30 Days' : '90 Days'}</div>
+                                </Headername>
+                            ) : null
+                        }
+                        {name.indexOf('Mail Order') === -1 && name.indexOf('Retail Order') === -1 && (<Headername>{name}</Headername>)}
                         {hasPinnedColumns && (<HeaderPin className={`${pinned.includes(value) ? 'text-info' : ''}`} name={value} onClick={isPinned}><i className="fa fa-thumb-tack" aria-hidden="true" /></HeaderPin>)}
                         {sortedCol && sortedCol[value] && <SortIcon name={value}>{(sortedCol[value] === 'asc' ? <i class="fa fa-arrow-up" /> : <i class="fa fa-arrow-down" />)}</SortIcon>}
                     </HeaderCell>

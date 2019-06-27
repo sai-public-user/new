@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import BenefitStructure from '../BenefitStructure/index';
 import './styles.css';
 import * as Styles from '../../common/Table/SharedStyles';
-import { withStyles } from '@material-ui/core/styles';
 
 import PageHeader from './PageHeader';
 import Table from '../../common/Table/table';

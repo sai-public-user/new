@@ -1,9 +1,4 @@
-#header_comp {
-    color: white !important;
-    background-color: #678bca;
-}
-
-.disabled {
-    cursor: no-drop !important;
-    color: #6c757d !important;
+div[role=toolbar] {
+    background-color: #e9e8ea !important;
+    color: white;
 }

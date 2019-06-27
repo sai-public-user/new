@@ -98,7 +98,9 @@ class Table extends Component {
         }
     }
 
-    onCellClick = (value) => {
+    onCellClick = (value, { target }) => {
+        const name = target.getAttribute('name');
+        if (name === 'pin_value') return;
         let { sortedCol = {}, rows } = this.state;
         if (sortedCol && Object.keys(sortedCol).length > 0 && !sortedCol.hasOwnProperty(value)) sortedCol = {};
         if (sortedCol.hasOwnProperty(value) && sortedCol[value] === 'asc') sortedCol[value] = 'desc'

@@ -11,6 +11,7 @@ const {
     Rows,
     HeaderData,
     CustomTable,
+    TableContainer,
 } = Styles.default;
 
 class Table extends Component {
@@ -31,8 +32,13 @@ class Table extends Component {
     }
 
     componentDidMount() {
-        const { headers, rows } = this.props.Data;
-        this.setState({ headers, rows });
+        const { headers, rows, maxPin = 5, maxCompare = 5 } = this.props;
+        this.setState({
+            headers,
+            rows,
+            maxPinnedcols: Array.isArray(headers) && headers.length > maxPin ? maxPin : headers.length - 1,
+            compareLimit: Array.isArray(rows) && rows.length > maxCompare ? maxCompare : rows.length - 1,
+        });
     }
 
     isPinned = (e) => {
@@ -62,27 +68,29 @@ class Table extends Component {
     }
 
     getHeaders = (tableCols, days = [], order = '') => {
-		const { exclude } = this.props;
+		const { exclude = [] } = this.props;
         const { pinned } = this.state;
         if(tableCols.length > 0) {
             const headers = tableCols.filter(({ name, value }) => {
-				if (Array.isArray(pinned) && pinned.includes(value)) return false;
-                const valueData = name.indexOf(' - ') > -1 ? name.split(' - ')[0] : value;
-                const tier = Array.isArray(name.split(' - ')) && name.split(' - ').length > 1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '') : '';
-                const valueIfDays = name.replace(valueData, '').length > 0 ? name.replace(valueData, '').replace(tier,'').replace('-','').trim() : name; 
-                if(exclude.includes(name.indexOf(' - ') > -1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '') : value)) return false;
-                if (Array.isArray(days) && days.includes(valueIfDays) && days.includes(valueData)) {
-                    return name.indexOf(order) > -1;
-                } else if(name.indexOf('Days') === -1) return true;
+                if (Array.isArray(pinned) && pinned.includes(value)) return false;
+                else return true;
+                // const valueData = name.indexOf(' - ') > -1 ? name.split(' - ')[0] : value;
+                // const tier = Array.isArray(name.split(' - ')) && name.split(' - ').length > 1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '') : '';
+                // const valueIfDays = name.replace(valueData, '').length > 0 ? name.replace(valueData, '').replace(tier,'').replace('-','').trim() : name; 
+                // if(exclude.includes(name.indexOf(' - ') > -1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '') : value)) return false;
+                // if (Array.isArray(days) && days.includes(valueIfDays) && days.includes(valueData)) {
+                //     return name.indexOf(order) > -1;
+                // } else if(name.indexOf('Days') === -1) return true;
             });
             return headers;
         }
     }
 
     compareClicked = () => {
-        const { checked, rows } = this.state;
-        const compareRows = rows.filter(({ id }) => checked.includes(id));
-        this.setState({ compareRows, showCmpDialog: true })
+        const { checked, rows, compareLimit } = this.state;
+        let compareRows = rows.filter(({ id }) => checked.includes(id));
+        compareRows = compareRows.slice(0, compareLimit);
+        this.setState({ compareRows, showCmpDialog: true, checked: [] })
     }
 
     sortOrder = (row1, row2, type, value) => {
@@ -124,13 +132,13 @@ class Table extends Component {
             compareRows,
             showCmpDialog,
             sortedCol,
-            Table,
+            compareLimit,
         } = this.state;
         const { days = [], hasPinnedColumns } = this.props;
         const filteredHeaders = this.getHeaders(headers, days);
         const compareHeaders = Array.isArray(filteredHeaders) && Array.isArray(pinnedHeaders) ? filteredHeaders.concat(pinnedHeaders) : [];
         return (
-            <Fragment>
+            <TableContainer>
                 {hasPinnedColumns && pinnedHeaders.length > 0 && (
                     <PinnedTable
                         pinnedHeaders={pinnedHeaders}
@@ -142,24 +150,24 @@ class Table extends Component {
                         pinnedRow
                         isPinned={this.isPinned}
                         rows={rows}
-                        checked={checked}
+                        checked={checked.length > compareLimit ? checked.slice(0, compareLimit) : checked}
                         rowCheckBoxChange={this.rowCheckBoxChange}
                         onScroll={this.scrolled}
                         ref="pinned"
                     />)}
-                <div style={{ width: `${100 - (pinnedHeaders.length * 18 + pinnedHeaders.length)}%`, overflowX: 'scroll', overflowY: 'hidden', position: 'relative' }}>
+                <div style={{ width: `${100 - (pinnedHeaders.length * 18 + pinnedHeaders.length)}%`, overflowX: 'auto', overflowY: 'hidden', position: 'relative' }}>
                     <Fragment className="table-head">
                         <CustomTable>
                             <HeaderData>
-                                <Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={filteredHeaders} compare={this.compareClicked} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} />
+                                <Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={filteredHeaders} compare={this.compareClicked} hasPinnedColumns={hasPinnedColumns} pinned={pinned} isPinned={this.isPinned} />
                             </HeaderData>
                         </CustomTable>
                     </Fragment>
                     <Fragment className="table-body">
                         <CustomTable>
-                            <Rows style={{ overflowX: 'visible', overflowY: 'scroll' }} ref="tbody" onScroll={() => this.scrolled(this.refs.tbody.scrollTop, 'main')}>
+                            <Rows style={{ overflowX: 'visible', overflowY: 'auto' }} ref="tbody" onScroll={() => this.scrolled(this.refs.tbody.scrollTop, 'main')}>
                                 {Array.isArray(rows) && rows.map(
-                                    (row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={filteredHeaders} pinned={pinned} />
+                                    (row, i) => <Row checked={checked.length > compareLimit ? checked.slice(0, compareLimit) : checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={filteredHeaders} pinned={pinned} />
                                 )}
                             </Rows>
 			            </CustomTable>
@@ -171,7 +179,7 @@ class Table extends Component {
                     compareRows={compareRows}
                     compareHeaders={compareHeaders}
                 />
-            </Fragment>
+            </TableContainer>
         );
     }
 }

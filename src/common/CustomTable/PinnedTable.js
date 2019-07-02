@@ -36,7 +36,7 @@ class PinnedTable extends Component {
                   <HeaderData><Header sortedCol={sortedCol} onCellClick={onCellClick} headers={pinnedHeaders} compare={compareClicked} hasPinnedColumns={hasPinnedColumns} pinned={pinned} pinnedRow={pinnedRow} isPinned={isPinned} /></HeaderData>
                 </CustomTable>
                 <CustomTable>
-                  <Rows style={{ overflowY: 'scroll', overflowX: 'hidden' }} ref="tbody" onScroll={this.onScroll}>
+                  <Rows style={{ overflowY: 'auto', overflowX: 'hidden' }} ref="tbody" onScroll={this.onScroll}>
                       {Array.isArray(rows) && rows.map((row, i) => <Row checked={checked} pinnedRow pinned={pinned} checkBoxChange={rowCheckBoxChange} row={row} key={i} headers={pinnedHeaders} />)}
                   </Rows>
                 </CustomTable>

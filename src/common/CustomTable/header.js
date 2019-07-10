@@ -1,8 +1,6 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 // import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
 import * as Styles from './SharedStyles';
-import PropTypes from 'prop-types';
-import Checkbox from '@material-ui/core/Checkbox';
 
 const {
     TableHeader,
@@ -24,33 +22,19 @@ function Header(props) {
         isPinned, hasPinnedColumns,
         pinnedRow, compare, sortedCol,
         onCellClick, noCompare,
-        checkBoxChange, checkBox,
     } = props;
     return (
         <TableHeader>
             {
                 (Array.isArray(pinned) && pinned.length > 0 && pinnedRow) ||
                 (!pinnedRow && Array.isArray(pinned) && pinned.length === 0) && !noCompare ? 
-                (
-                    <Fragment>
-                        {checkBoxChange && checkBox !== undefined ? (<Checkbox name="allrows" onChange={checkBoxChange} value={checkBox} />) : null}
-                        <CompareIcon>{windowRestorSvg(compare)}</CompareIcon>
-                    </Fragment>
-                ) : null
+                (<CompareIcon>{windowRestorSvg(compare)}</CompareIcon>) : null
             }
             {headers.map(col => {
                 const { name = '', value = '' } = col;
                 return (
                     <HeaderCell key={value} name={name} onClick={(e) => onCellClick ? onCellClick(value, e) : null}>
-                        {name.indexOf('Mail Order') !== -1 || name.indexOf('Retail Order') !== -1 ? (
-                            <Headername>
-                                <HeaderParent>{name.replace(' 30 Days', '').replace(' 90 Days', '')}</HeaderParent>
-                                <hr />
-                                <div>{name.indexOf('30 Days') > -1 ? '30 Days' : '90 Days'}</div>
-                                </Headername>
-                            ) : null
-                        }
-                        {name.indexOf('Mail Order') === -1 && name.indexOf('Retail Order') === -1 && (<Headername>{name}</Headername>)}
+                        {<Headername>{name}</Headername>}
                         {hasPinnedColumns && (<HeaderPin className={`${pinned.includes(value) ? 'text-info' : ''}`} name={value} onClick={isPinned}><i className="fa fa-thumb-tack" name="pin_value" aria-hidden="true" /></HeaderPin>)}
                         {sortedCol && sortedCol[value] && <SortIcon name={value}>{(sortedCol[value] === 'asc' ? <i class="fa fa-arrow-up" /> : <i class="fa fa-arrow-down" />)}</SortIcon>}
                     </HeaderCell>
@@ -58,18 +42,6 @@ function Header(props) {
             })}
         </TableHeader>
     );
-}
-
-Header.propTypes = {
-    sortedCol: PropTypes.object,
-    onCellClick: PropTypes.func,
-    headers: PropTypes.array.isRequired,
-    compare: PropTypes.func,
-    hasPinnedColumns: PropTypes.bool,
-    pinned: PropTypes.array,
-    isPinned: PropTypes.bool,
-    checkBoxChange: PropTypes.func,
-    checkBox: PropTypes.bool,
 }
 
 export default Header;

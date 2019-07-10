@@ -3,7 +3,6 @@ import Cell from './cell';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import * as Styles from './SharedStyles';
-import PropTypes from 'prop-types';
 
 const {
     RowCheckbox,
@@ -30,15 +29,6 @@ function Row(props) {
             ))}
         </TableRow>
     );
-}
-
-Row.propTypes = {
-    row: PropTypes.object.isRequired,
-    headers: PropTypes.array.isRequired,
-    pinned: PropTypes.array,
-    checked: PropTypes.array,
-    checkBoxChange: PropTypes.func,
-    pinnedRow: PropTypes.bool,
 }
 
 export default Row;

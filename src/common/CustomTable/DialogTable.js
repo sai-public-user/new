@@ -4,7 +4,6 @@ import Row from './row';
 import './table.css';
 import * as Styles from '../../common/Table/SharedStyles';
 import { Dialog } from '@material-ui/core';
-import PropTypes from 'prop-types';
 
 const {
     Rows,
@@ -31,13 +30,6 @@ function DialogTable(props) {
             }
         </Dialog>
     );
-}
-
-DialogTable.propTypes = {
-    showCmpDialog: PropTypes.bool.isRequired,
-    closeDialog: PropTypes.func.isRequired,
-    compareRows: PropTypes.array.isRequired,
-    compareHeaders: PropTypes.array.isRequired,
 }
 
 export default DialogTable;

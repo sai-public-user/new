@@ -21,8 +21,15 @@ class Home extends Component {
             excludeHeaders: [],
             exHeadersNames: [],
             order: '',
+            // Data: '',
         }
     }
+
+    // componentDidMount() {
+    //   axios.get('www.google.com').then((Data)=> {
+    //     this.setState({ Data })
+    //   })
+    // }
 
     handleSwitchChange = ({ target: { value } }) => {
         let { days = [] } = this.state;

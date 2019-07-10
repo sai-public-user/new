@@ -1,6 +1,5 @@
 import React from 'react';
 import * as Styles from './SharedStyles';
-import PropTypes from 'prop-types';
 
 const {
     TableRowCell,
@@ -13,12 +12,6 @@ function Cell(props) {
             {data !== null && (data.length > 0 || typeof data === 'number') ? data : '-'}
         </TableRowCell>
     )
-}
-
-Cell.propTypes = {
-    data: PropTypes.any.isRequired,
-    name: PropTypes.string,
-    title: PropTypes.string,
 }
 
 export default Cell;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import * as Styles from '../../common/Table/SharedStyles';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -122,15 +122,20 @@ function TableFilter(props) {
               <FilterHeaderPaper>
                 <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
                   {
-                    Array.isArray(filterLeft) && filterLeft.map(name =>
-                      <FilterCell name={name} onClick={filterHeaderClick} style={{ color: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '#777': 'black'}`, cursor: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '' : 'pointer'}` }}>
-                        <div>{name}</div>
-                        {!exHeadersNames.includes(name) &&
-                        <HeaderCheck>
-                          <i className="fa fa-check" aria-hidden="true" />
-                        </HeaderCheck>}
+                    <Fragment>
+                      <FilterCell name="Select All" onClick={filterHeaderClick}>
+                        <div>{!exHeadersNames.includes('Select All') ? 'Select All' : 'Deselect All'}</div>
                       </FilterCell>
-                    )
+                      {Array.isArray(filterLeft) && filterLeft.map(name =>
+                        <FilterCell name={name} onClick={filterHeaderClick} style={{ color: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '#777': 'black'}`, cursor: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '' : 'pointer'}` }}>
+                          <div>{name}</div>
+                          {!exHeadersNames.includes(name) &&
+                          <HeaderCheck>
+                            <i className="fa fa-check" aria-hidden="true" />
+                          </HeaderCheck>}
+                        </FilterCell>
+                      )}
+                    </Fragment>
                   }
                 </Paper>
                 <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>

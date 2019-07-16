@@ -18,8 +18,8 @@ class Home extends Component {
         this.state = {
             days: [ 'Retail Order', '30 Days' ],
             filterType: '',
-            excludeHeaders: [],
-            exHeadersNames: [],
+            excludeHeaders: ['select_all'],
+            exHeadersNames: ['Select All'],
             order: '',
             // Data: '',
         }
@@ -51,9 +51,20 @@ class Home extends Component {
     filterHeaderClick = ({ currentTarget } = {}) => {
       let name = currentTarget.getAttribute('name');
       const { table: { state: { headers = [], pinned = [] } = {} } = {} } = this.refs || {};
+      let { excludeHeaders = [], exHeadersNames = [] } = this.state;
       if (name !== null) {
+        if (name === 'Select All') {
+          if (excludeHeaders.includes('select_all')) {
+            excludeHeaders = this.getFilterHeaders();
+            excludeHeaders = excludeHeaders.map(one => one.toLowerCase().replace(/ /g, '_'));
+            exHeadersNames = this.getFilterHeaders();
+          } else {
+            excludeHeaders = ['select_all'];
+            exHeadersNames = ['Select All'];
+          }
+          return this.setState({ excludeHeaders, exHeadersNames });
+        }
         if (pinned.includes(name.toLowerCase().replace(/ /g,'_'))) return;
-        let { excludeHeaders = [], exHeadersNames = [] } = this.state;
         if (exHeadersNames.includes(name)) exHeadersNames = exHeadersNames.filter(one => one !== name);
         else exHeadersNames.push(name);
         if(name.indexOf('Preferred Tier ') > -1) name = name.replace('Preferred Tier ', 'PT:');
@@ -65,21 +76,26 @@ class Home extends Component {
       }
     }
 
-    render() {
-        const { days = [], filterType, excludeHeaders, exHeadersNames, order } = this.state;
-        const { table: { state: { headers = [], pinned = [] } = {} } = {} } = this.refs || {};
-        let filterHeaderNames = [];
+    getFilterHeaders = () => {
+      let filterHeaderNames = [];
+      const { table: { state: { headers = [], pinned = [] } = {} } = {} } = this.refs || {};
         const filterHeaders = headers.filter(({ name, value }) => {
           if (name.indexOf(' - ') > -1) {
             const tierType = (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '');
-            if (filterHeaderNames.includes(tierType)) return false;
-            else filterHeaderNames.push(tierType);
+            if (filterHeaderNames.includes(tierType.trim())) return false;
+            else filterHeaderNames.push(tierType.trim());
             return true;
           } else filterHeaderNames.push(name); 
           return true;
         });
 
-        filterHeaderNames = JSON.parse(JSON.stringify(filterHeaderNames).replace(/PT:/g, 'Preferred Tier ').replace(/ST:/g, 'Standard Tier '));
+        return JSON.parse(JSON.stringify(filterHeaderNames).replace(/PT:/g, 'Preferred Tier ').replace(/ST:/g, 'Standard Tier '));
+    }
+
+    render() {
+        const { days = [], filterType, excludeHeaders, exHeadersNames, order } = this.state;
+        const { table: { state: { headers = [], pinned = [] } = {} } = {} } = this.refs || {};
+        const filterHeaderNames = this.getFilterHeaders();
         let filterLeft = filterHeaderNames.map(one=>one);
         filterLeft = filterHeaderNames.length > 10 && filterLeft.splice(0,10);
         let filterRight = filterHeaderNames.map(one=>one);

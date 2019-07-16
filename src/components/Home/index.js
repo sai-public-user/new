@@ -58,21 +58,22 @@ class Home extends Component {
             excludeHeaders = this.getFilterHeaders();
             excludeHeaders = excludeHeaders.map(one => one.toLowerCase().replace(/ /g, '_'));
             exHeadersNames = this.getFilterHeaders();
+            days = [];
           } else {
             excludeHeaders = ['select_all'];
             exHeadersNames = ['Select All'];
-            days = [];
+            // days = [ 'Retail Order', '30 Days', 'Mail Order', '90 Days' ];
           }
           return this.setState({ excludeHeaders, exHeadersNames, days });
         }
         if (pinned.includes(name.toLowerCase().replace(/ /g,'_'))) return;
         if (exHeadersNames.includes(name)) exHeadersNames = exHeadersNames.filter(one => one !== name);
-        else exHeadersNames.push(name);
+        else exHeadersNames.push(name.trim());
         if(name.indexOf('Preferred Tier ') > -1) name = name.replace('Preferred Tier ', 'PT:');
         else if(name.indexOf('Standard Tier ') > -1) name = name.replace('Standard Tier ', 'ST:');
         else name = name.toLowerCase().replace(/ /g, '_');
         if (excludeHeaders.includes(name)) excludeHeaders = excludeHeaders.filter(one => one !== name);
-        else excludeHeaders.push(name);
+        else excludeHeaders.push(name.trim());
         this.setState({ excludeHeaders, exHeadersNames });
       }
     }

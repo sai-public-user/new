@@ -70,13 +70,16 @@ class Table extends Component {
             const headers = tableCols.filter(({ name, value }) => {
 				if (Array.isArray(pinned) && pinned.includes(value)) return false;
                 const valueData = name.indexOf(' - ') > -1 ? name.split(' - ')[0] : value;
-                const tier = Array.isArray(name.split(' - ')) && name.split(' - ').length > 1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '') : '';
-                const valueIfDays = name.replace(valueData, '').length > 0 ? name.replace(valueData, '').replace(tier,'').replace('-','').trim() : name; 
-                if(exclude.includes(name.indexOf(' - ') > -1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '') : value)) return false;
+                const tier = Array.isArray(name.split(' - ')) && name.split(' - ').length > 1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '').trim() : '';
+                const valueIfDays = name.replace(valueData, '').length > 0 ? name.replace(valueData, '').replace(tier,'').replace('-','').trim() : name;
+                console.log(valueData, tier, valueIfDays);
+                if(exclude.includes(name.indexOf(' - ') > -1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '').trim() : value)) return false;
+                console.log(exclude, tier)
                 if (Array.isArray(days) && days.includes(valueIfDays) && days.includes(valueData)) {
                     return name.indexOf(order) > -1;
                 } else if(name.indexOf('Days') === -1) return true;
             });
+            console.log(exclude, headers);
             return headers;
         }
     }

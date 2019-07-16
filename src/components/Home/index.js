@@ -51,7 +51,7 @@ class Home extends Component {
     filterHeaderClick = ({ currentTarget } = {}) => {
       let name = currentTarget.getAttribute('name');
       const { table: { state: { headers = [], pinned = [] } = {} } = {} } = this.refs || {};
-      let { excludeHeaders = [], exHeadersNames = [] } = this.state;
+      let { excludeHeaders = [], exHeadersNames = [], days = [] } = this.state;
       if (name !== null) {
         if (name === 'Select All') {
           if (excludeHeaders.includes('select_all')) {
@@ -61,8 +61,9 @@ class Home extends Component {
           } else {
             excludeHeaders = ['select_all'];
             exHeadersNames = ['Select All'];
+            days = [];
           }
-          return this.setState({ excludeHeaders, exHeadersNames });
+          return this.setState({ excludeHeaders, exHeadersNames, days });
         }
         if (pinned.includes(name.toLowerCase().replace(/ /g,'_'))) return;
         if (exHeadersNames.includes(name)) exHeadersNames = exHeadersNames.filter(one => one !== name);

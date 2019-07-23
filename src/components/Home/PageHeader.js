@@ -65,7 +65,8 @@ function PageHeader(props) {
                       label={<SwitchText>90 Days</SwitchText>}
                     />
                 </FormGroup>
-                <TableFilterIcon onClick={() => props.onTableToggle('column')}><i class="fa fa-table fa-lg" aria-hidden="true"></i></TableFilterIcon>
+                <TableFilterIcon onClick={() => props.onTableToggle('column', false)}><i class="fa fa-table fa-lg" aria-hidden="true" /></TableFilterIcon>
+                <TableFilterIcon onClick={() => props.onTableToggle('column', true)}><i class="fa fa-download" aria-hidden="true" /></TableFilterIcon>
             </TableFilters>
         </Header>
     )

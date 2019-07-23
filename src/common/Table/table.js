@@ -72,14 +72,11 @@ class Table extends Component {
                 const valueData = name.indexOf(' - ') > -1 ? name.split(' - ')[0] : value;
                 const tier = Array.isArray(name.split(' - ')) && name.split(' - ').length > 1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '').trim() : '';
                 const valueIfDays = name.replace(valueData, '').length > 0 ? name.replace(valueData, '').replace(tier,'').replace('-','').trim() : name;
-                console.log(valueData, tier, valueIfDays);
                 if(exclude.includes(name.indexOf(' - ') > -1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '').trim() : value)) return false;
-                console.log(exclude, tier)
                 if (Array.isArray(days) && days.includes(valueIfDays) && days.includes(valueData)) {
                     return name.indexOf(order) > -1;
                 } else if(name.indexOf('Days') === -1) return true;
             });
-            console.log(exclude, headers);
             return headers;
         }
     }
@@ -116,9 +113,19 @@ class Table extends Component {
 
     closeDialog = () => this.setState({ showCmpDialog: false });
 
+    scrollInterval = 0;
+    scrollTable = '';
+
     scrolled = (scrollTop, name) => {
-        if(name === 'main' && this.refs.pinned) this.refs.pinned.refs.tbody.scrollTop = scrollTop;
-        if (name === 'pinned') this.refs.tbody.scrollTop = scrollTop;
+        let scrollVal = scrollTop;
+        if(this.scrollInterval < (Date.now() - 150)) {
+            this.scrollInterval = Date.now();
+            this.scrollTable = name;
+        }
+        if(this.scrollTable === 'main' && this.refs.pinned) 
+        this.refs.pinned.refs.tbody.scrollTo(0, scrollVal);
+        if (this.scrollTable === 'pinned')
+        this.refs.tbody.scrollTo(0, scrollVal); //.scrollTop = scrollVal;
     }
 
     headerCheckBoxChange = (e) => {

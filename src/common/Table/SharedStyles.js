@@ -180,6 +180,22 @@ const FilterCell = styled.div `
     }
 `;
 
+const FilterFileType = styled.div `
+    padding: 6px;
+    width: 15vw;
+    text-transform: capitalize;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+`;
+
+const SelectFileType = styled.div `
+    display: flex;
+    justify-content: flex-end;
+`;
+
 const TableContainer = styled.div `
     display: flex;
     height: 90vh;
@@ -238,4 +254,6 @@ export default {
     HeaderCheck,
     SortIcon,
     CustomTable,
+    FilterFileType,
+    SelectFileType,
 };

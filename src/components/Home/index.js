@@ -22,6 +22,8 @@ class Home extends Component {
             exHeadersNames: ['Select All'],
             order: '',
             // Data: '',
+            fileType: '',
+            isDownload: false,
         }
     }
 
@@ -30,6 +32,10 @@ class Home extends Component {
     //     this.setState({ Data })
     //   })
     // }
+
+    onFileTypeChange = ({ target: { value } }) => {
+      console.log(value);
+    }
 
     handleSwitchChange = ({ target: { value } }) => {
         let { days = [] } = this.state;
@@ -42,9 +48,10 @@ class Home extends Component {
     }
 
 
-    toggleTableFilter = (filterType) => {
+    toggleTableFilter = (filterType, isDownload) => {
       this.setState({
         filterType,
+        isDownload,
       });
     };
 
@@ -94,8 +101,17 @@ class Home extends Component {
         return JSON.parse(JSON.stringify(filterHeaderNames).replace(/PT:/g, 'Preferred Tier ').replace(/ST:/g, 'Standard Tier '));
     }
 
+    onDownloadClick() {
+      console.log(this);
+      this.setState({ isDownload: !this.state.isDownload });
+    }
+
     render() {
-        const { days = [], filterType, excludeHeaders, exHeadersNames, order } = this.state;
+        const {
+          days = [], filterType, excludeHeaders,
+          exHeadersNames, order, fileType,
+          isDownload,
+        } = this.state;
         const { table: { state: { headers = [], pinned = [] } = {} } = {} } = this.refs || {};
         const filterHeaderNames = this.getFilterHeaders();
         let filterLeft = filterHeaderNames.map(one=>one);
@@ -121,6 +137,9 @@ class Home extends Component {
                 filterHeaderClick={this.filterHeaderClick}
                 pinned={pinned}
                 exHeadersNames={exHeadersNames}
+                fileType={fileType}
+                isDownload={isDownload}
+                onFileTypeChange={this.onFileTypeChange}
               />
             </Fragment>
         );

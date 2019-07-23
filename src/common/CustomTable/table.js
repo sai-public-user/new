@@ -119,6 +119,20 @@ class Table extends Component {
 
     closeDialog = () => this.setState({ showCmpDialog: false });
 
+    scrollInterval = 0;
+    scrollTable = '';
+
+    scrolled = (scrollTop, name) => {
+        if(this.scrollInterval < (Date.now() - 150)) {
+            this.scrollInterval = Date.now();
+            this.scrollTable = name;
+        }
+        if(this.scrollTable === 'main' && this.refs.pinned) 
+        this.refs.pinned.refs.tbody.scrollTo(0, scrollTop);
+        if (this.scrollTable === 'pinned')
+        this.refs.tbody.scrollTo(0, scrollTop);
+    }
+
     scrolled = (scrollTop, name) => {
         if(name === 'main' && this.refs.pinned) this.refs.pinned.refs.tbody.scrollTop = scrollTop;
         if (name === 'pinned') this.refs.tbody.scrollTop = scrollTop;

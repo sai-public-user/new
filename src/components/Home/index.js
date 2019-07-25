@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 import './styles.css';
 import * as Styles from '../../common/Table/SharedStyles';
 
 import PageHeader from './PageHeader';
 import Table from '../../common/Table/table';
-import Data from '../../common/Table/SampleData';
 import TableFilter from './TableFilter';
 
 const {
@@ -112,6 +112,8 @@ class Home extends Component {
           exHeadersNames, order, fileType,
           isDownload,
         } = this.state;
+        console.log(this.props);
+        const { data: Data } = this.props;
         const { table: { state: { headers = [], pinned = [] } = {} } = {} } = this.refs || {};
         const filterHeaderNames = this.getFilterHeaders();
         let filterLeft = filterHeaderNames.map(one=>one);
@@ -145,5 +147,9 @@ class Home extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+  data: state.data,
+})
  
-export default Home;
+export default connect(mapStateToProps)(Home);

@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 import Header from './header';
 import Row from './row';
 import './table.css';
@@ -66,13 +67,14 @@ class Table extends Component {
     getHeaders = (tableCols, days = [], order = '') => {
 		const { exclude } = this.props;
         const { pinned } = this.state;
+        console.log(this.props);
         if(tableCols.length > 0) {
             const headers = tableCols.filter(({ name, value }) => {
 				if (Array.isArray(pinned) && pinned.includes(value)) return false;
                 const valueData = name.indexOf(' - ') > -1 ? name.split(' - ')[0] : value;
                 const tier = Array.isArray(name.split(' - ')) && name.split(' - ').length > 1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '').trim() : '';
                 const valueIfDays = name.replace(valueData, '').length > 0 ? name.replace(valueData, '').replace(tier,'').replace('-','').trim() : name;
-                if(exclude.includes(name.indexOf(' - ') > -1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '').trim() : value)) return false;
+                if(Array.isArray(exclude) && exclude.includes(name.indexOf(' - ') > -1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '').trim() : value)) return false;
                 if (Array.isArray(days) && days.includes(valueIfDays) && days.includes(valueData)) {
                     return name.indexOf(order) > -1;
                 } else if(name.indexOf('Days') === -1) return true;
@@ -211,12 +213,8 @@ Table.propTypes = {
     exclude: PropTypes.array,
 }
  
-export default Table;
+const mapStateToProps = (state) => ({
+    Data: state.data,
+})
 
-//{
-//     width: "80px",
-//     textOverflow: "ellipsis",
-//     whiteSpace: "nowrap",
-//     overflow: "hidden",
-//     display: "flow-root"
-//   }
+export default connect(mapStateToProps)(Table);

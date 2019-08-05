@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import './styles.css';
 import * as Styles from '../../common/Table/SharedStyles';
 
+import {
+  manageDays
+} from '../../actions/getAllData';
+
 import PageHeader from './PageHeader';
 import Table from '../../common/Table/table';
 import TableFilter from './TableFilter';
@@ -16,35 +20,28 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            days: [ 'Retail Order', '30 Days' ],
             filterType: '',
             excludeHeaders: ['select_all'],
             exHeadersNames: ['Select All'],
             order: '',
-            // Data: '',
             fileType: '',
             isDownload: false,
         }
     }
-
-    // componentDidMount() {
-    //   axios.get('www.google.com').then((Data)=> {
-    //     this.setState({ Data })
-    //   })
-    // }
 
     onFileTypeChange = ({ target: { value } }) => {
       console.log(value);
     }
 
     handleSwitchChange = ({ target: { value } }) => {
-        let { days = [] } = this.state;
+        let { days = [] } = this.props;
         if (days.includes(value)) {
             days = days.filter(one => one !== value)
         } else {
             days.push(value);
         }
-        this.setState({ days, order: '' });
+        this.props.manageDays(days);
+        this.setState({ order: '' });
     }
 
 
@@ -108,12 +105,12 @@ class Home extends Component {
 
     render() {
         const {
-          days = [], filterType, excludeHeaders,
+          filterType, excludeHeaders,
           exHeadersNames, order, fileType,
           isDownload,
         } = this.state;
+        const { Data } = this.props;
         console.log(this.props);
-        const { data: Data } = this.props;
         const { table: { state: { headers = [], pinned = [] } = {} } = {} } = this.refs || {};
         const filterHeaderNames = this.getFilterHeaders();
         let filterLeft = filterHeaderNames.map(one=>one);
@@ -123,15 +120,15 @@ class Home extends Component {
 
         return ( 
             <Fragment>
-              <PageHeader onSwitchChange={this.handleSwitchChange} days={days} onTableToggle={this.toggleTableFilter} />
+              <PageHeader onSwitchChange={this.handleSwitchChange} days={Data.days} onTableToggle={this.toggleTableFilter} />
               <MaindataContainer>
                 <TableContainer>
-                  <Table ref="table" hasPinnedColumns days={days} Data={Data} order={order} exclude={excludeHeaders} />
+                  <Table ref="table" hasPinnedColumns order={order} exclude={excludeHeaders} />
                 </TableContainer>
               </MaindataContainer>
               <TableFilter
                 filterType={filterType}
-                days={days}
+                days={Data.days}
                 filterLeft={filterLeft}
                 filterRight={filterRight}
                 handleSwitchChange={this.handleSwitchChange}
@@ -149,7 +146,11 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  data: state.data,
+  Data: state.data,
 })
+
+const dispatchToProps = {
+  manageDays,
+}
  
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, dispatchToProps)(Table);

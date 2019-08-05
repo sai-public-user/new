@@ -33,7 +33,7 @@ function Header(props) {
                 (!pinnedRow && Array.isArray(pinned) && pinned.length === 0) && !noCompare ? 
                 (
                     <Fragment>
-                        {checkBoxChange && checkBox !== undefined ? (<Checkbox name="allrows" onChange={checkBoxChange} value={checkBox} />) : null}
+                        {/* {checkBoxChange && checkBox !== undefined ? (<Checkbox name="allrows" onChange={checkBoxChange} value={checkBox} />) : null} */}
                         <CompareIcon>{windowRestorSvg(compare)}</CompareIcon>
                     </Fragment>
                 ) : null

@@ -2,7 +2,12 @@ import {
     REQUEST_UPDATE_DAYS,
     SUCCESS_UPDATE_DAYS,
     ERROR_UPDATE_DAYS,
+    SUCCESS_ROWS_DATA,
+    ERROR_ROWS_DATA,
+    REQUEST_ROWS_DATA,
 } from '../actionTypes';
+import axios from 'axios';
+  
 
 const manageDays = data => (dispatch) => {
         dispatch({ type: REQUEST_UPDATE_DAYS });
@@ -14,6 +19,20 @@ const manageDays = data => (dispatch) => {
         // });
         dispatch({ type: SUCCESS_UPDATE_DAYS, payload: data });
     };
+
+    const getData = () => (dispatch) => {
+        dispatch({ type: REQUEST_ROWS_DATA });
+        //in case of api calls change post get patch delete accordingly
+        return axios.get('./sample.json').then(({ data: res = [] }) => {
+            dispatch({ type: SUCCESS_ROWS_DATA, payload: res});
+        }).catch((err) => {
+            console.log(err);
+            dispatch({ type: ERROR_ROWS_DATA, payload: err });
+        });
+    };
   
     
-    export { manageDays };
+    export {
+        manageDays,
+        getData,
+    };

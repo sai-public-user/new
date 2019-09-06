@@ -5,6 +5,8 @@ import Row from './row';
 import './table.css';
 import * as Styles from '../../common/Table/SharedStyles';
 import PropTypes from 'prop-types';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 import PinnedTable from './PinnedTable';
 import DialogTable from './DialogTable';
@@ -34,8 +36,6 @@ class Table extends Component {
     }
 
     componentDidMount() {
-        const { headers, rows } = this.props.Data;
-        this.setState({ headers, rows });
     }
 
     isPinned = (e) => {
@@ -144,8 +144,7 @@ class Table extends Component {
 
     render() {
         const {
-            pinned, headers,
-            rows, checked,
+            pinned, checked,
             pinnedHeaders,
             compareRows,
             showCmpDialog,
@@ -154,6 +153,7 @@ class Table extends Component {
             headerCheck,
         } = this.state;
         const { days = [], hasPinnedColumns } = this.props;
+        const { headers, rows } = this.props.Data;
         const filteredHeaders = this.getHeaders(headers, days);
         const compareHeaders = Array.isArray(filteredHeaders) && Array.isArray(pinnedHeaders) ? filteredHeaders.concat(pinnedHeaders) : [];
         return (
@@ -187,8 +187,13 @@ class Table extends Component {
                     <Fragment className="table-body">
                         <CustomTable>
                             <Rows style={{ overflowX: 'visible', overflowY: 'scroll' }} ref="tbody" onScroll={() => this.scrolled(this.refs.tbody.scrollTop, 'main')}>
-                                {Array.isArray(rows) && rows.map(
+                                {Array.isArray(rows) && rows.length > 0 ? rows.map(
                                     (row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={filteredHeaders} pinned={pinned} />
+                                ) : (
+                                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                        <CircularProgress disableShrink />
+                                        <span>Loading Data...</span>
+                                    </div>
                                 )}
                             </Rows>
 			            </CustomTable>

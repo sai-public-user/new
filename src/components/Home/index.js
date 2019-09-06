@@ -4,7 +4,8 @@ import './styles.css';
 import * as Styles from '../../common/Table/SharedStyles';
 
 import {
-  manageDays
+  manageDays,
+  getData,
 } from '../../actions/getAllData';
 
 import PageHeader from './PageHeader';
@@ -27,6 +28,10 @@ class Home extends Component {
             fileType: '',
             isDownload: false,
         }
+    }
+
+    componentDidMount() {
+      this.props.getData();
     }
 
     onFileTypeChange = ({ target: { value } }) => {
@@ -151,6 +156,7 @@ const mapStateToProps = (state) => ({
 
 const dispatchToProps = {
   manageDays,
+  getData,
 }
  
-export default connect(mapStateToProps, dispatchToProps)(Table);
+export default connect(mapStateToProps, dispatchToProps)(Home);

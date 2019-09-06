@@ -2,71 +2,74 @@ import {
   REQUEST_UPDATE_DAYS,
   SUCCESS_UPDATE_DAYS,
   ERROR_UPDATE_DAYS,
+  REQUEST_ROWS_DATA,
+  SUCCESS_ROWS_DATA,
+  ERROR_ROWS_DATA,
 } from '../actionTypes';
 
-const row = {
-  "id": '',
-  "county": "Alachua County",
-  "plan_code": "H1032-124-0",
-  "organization_name": "WellCare",
-  "plan_name": "WellCare Access (HMO SNP)",
-  "product_type": "SNP",
-  "monthly_premium": "-",
-  "annual_drug_deductible": 0,
-  "drug_count": "",
-  "current_enrollees": "109",
-  "gain_or_loss": "Gain",
-  "mail_order_pt_1_30_days": "90$",
-  "mail_order_pt_1_90_days": "30$",
-  "mail_order_pt_2_30_days": "90$",
-  "mail_order_pt_2_90_days": "30$",
-  "mail_order_pt_3_30_days": "90$",
-  "mail_order_pt_3_90_days": "30$",
-  "mail_order_pt_4_30_days": "90$",
-  "mail_order_pt_4_90_days": "30$",
-  "mail_order_pt_5_30_days": "90$",
-  "mail_order_pt_5_90_days": "30$",
-  "mail_order_st_1_30_days": "90$",
-  "mail_order_st_1_90_days": "30$",
-  "mail_order_st_2_30_days": "90$",
-  "mail_order_st_2_90_days": "30$",
-  "mail_order_st_3_30_days": "90$",
-  "mail_order_st_3_90_days": "30$",
-  "mail_order_st_4_30_days": "90$",
-  "mail_order_st_4_90_days": "30$",
-  "mail_order_st_5_30_days": "90$",
-  "mail_order_st_5_90_days": "30$",
-  "retail_order_pt_1_30_days": "90$",
-  "retail_order_pt_1_90_days": "30$",
-  "retail_order_pt_2_30_days": "90$",
-  "retail_order_pt_2_90_days": "30$",
-  "retail_order_pt_3_30_days": "90$",
-  "retail_order_pt_3_90_days": "30$",
-  "retail_order_pt_4_30_days": "90$",
-  "retail_order_pt_4_90_days": "30$",
-  "retail_order_pt_5_30_days": "90$",
-  "retail_order_pt_5_90_days": "30$",
-  "retail_order_st_1_30_days": "90$",
-  "retail_order_st_1_90_days": "30$",
-  "retail_order_st_2_30_days": "90$",
-  "retail_order_st_2_90_days": "30$",
-  "retail_order_st_3_30_days": "90$",
-  "retail_order_st_3_90_days": "30$",
-  "retail_order_st_4_30_days": "90$",
-  "retail_order_st_4_90_days": "30$",
-  "retail_order_st_5_30_days": "90$",
-  "retail_order_st_5_90_days": "30$",
-};
+// const row = {
+//   "id": '',
+//   "county": "Alachua County",
+//   "plan_code": "H1032-124-0",
+//   "organization_name": "WellCare",
+//   "plan_name": "WellCare Access (HMO SNP)",
+//   "product_type": "SNP",
+//   "monthly_premium": "-",
+//   "annual_drug_deductible": 0,
+//   "drug_count": "",
+//   "current_enrollees": "109",
+//   "gain_or_loss": "Gain",
+//   "mail_order_pt_1_30_days": "90$",
+//   "mail_order_pt_1_90_days": "30$",
+//   "mail_order_pt_2_30_days": "90$",
+//   "mail_order_pt_2_90_days": "30$",
+//   "mail_order_pt_3_30_days": "90$",
+//   "mail_order_pt_3_90_days": "30$",
+//   "mail_order_pt_4_30_days": "90$",
+//   "mail_order_pt_4_90_days": "30$",
+//   "mail_order_pt_5_30_days": "90$",
+//   "mail_order_pt_5_90_days": "30$",
+//   "mail_order_st_1_30_days": "90$",
+//   "mail_order_st_1_90_days": "30$",
+//   "mail_order_st_2_30_days": "90$",
+//   "mail_order_st_2_90_days": "30$",
+//   "mail_order_st_3_30_days": "90$",
+//   "mail_order_st_3_90_days": "30$",
+//   "mail_order_st_4_30_days": "90$",
+//   "mail_order_st_4_90_days": "30$",
+//   "mail_order_st_5_30_days": "90$",
+//   "mail_order_st_5_90_days": "30$",
+//   "retail_order_pt_1_30_days": "90$",
+//   "retail_order_pt_1_90_days": "30$",
+//   "retail_order_pt_2_30_days": "90$",
+//   "retail_order_pt_2_90_days": "30$",
+//   "retail_order_pt_3_30_days": "90$",
+//   "retail_order_pt_3_90_days": "30$",
+//   "retail_order_pt_4_30_days": "90$",
+//   "retail_order_pt_4_90_days": "30$",
+//   "retail_order_pt_5_30_days": "90$",
+//   "retail_order_pt_5_90_days": "30$",
+//   "retail_order_st_1_30_days": "90$",
+//   "retail_order_st_1_90_days": "30$",
+//   "retail_order_st_2_30_days": "90$",
+//   "retail_order_st_2_90_days": "30$",
+//   "retail_order_st_3_30_days": "90$",
+//   "retail_order_st_3_90_days": "30$",
+//   "retail_order_st_4_30_days": "90$",
+//   "retail_order_st_4_90_days": "30$",
+//   "retail_order_st_5_30_days": "90$",
+//   "retail_order_st_5_90_days": "30$",
+// };
 
-const rows = [];
+// const rows = [];
 
-for(let i = 0; i < 20; i++) {
-  let data = {...row};
-  data.id = i;
-  data.monthly_premium = i + 1;
-  data.current_enrollees = i + 1 * i;
-  rows.push(data);
-}
+// for(let i = 0; i < 20; i++) {
+//   let data = {...row};
+//   data.id = i;
+//   data.monthly_premium = i + 1;
+//   data.current_enrollees = i + 1 * i;
+//   rows.push(data);
+// }
 
 const initalState = {
   loading: false,
@@ -123,7 +126,7 @@ const initalState = {
     { name: "Retail Order - ST:5 30 Days", value: 'retail_order_st_5_30_days' },
     { name: "Retail Order - ST:5 90 Days", value: 'retail_order_st_5_90_days' },
     ],
-    rows,
+    rows: [],
     days: [ 'Retail Order', '30 Days' ],
     maxPin: 5,
     maxCompare: 5,
@@ -146,6 +149,25 @@ const getAllData = (state = initalState, action) => {
         days: payload,
       };
     case ERROR_UPDATE_DAYS:
+      return {
+        ...state,
+        loading: false,
+        error: payload.error,
+      };
+      case REQUEST_ROWS_DATA:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case SUCCESS_ROWS_DATA:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        rows: payload,
+      };
+    case ERROR_ROWS_DATA:
       return {
         ...state,
         loading: false,

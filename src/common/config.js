@@ -1,5 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import GetAllData from '../reducers/getAllData';
+import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
     data: GetAllData,
@@ -7,7 +8,7 @@ const rootReducer = combineReducers({
 
 const store = createStore(
     rootReducer,
-    //applyMiddleware('redux-thunk'),
+    applyMiddleware(thunk),
 );
 
 export default store;

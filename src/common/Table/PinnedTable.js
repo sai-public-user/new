@@ -49,7 +49,7 @@ class PinnedTable extends Component {
 }
 
 PinnedTable.propTypes = {
-    pinnedHeaders: PropTypes.array,
+    pinnedHeaders: PropTypes.array.isRequired,
     sortedCol: PropTypes.object,
     onCellClick: PropTypes.func,
     compareClicked: PropTypes.func,

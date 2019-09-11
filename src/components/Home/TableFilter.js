@@ -80,149 +80,152 @@ function TableFilter(props) {
     fileType,
     onFileTypeChange,
     isDownload = false,
-	} = props || {};
-    return (
-      <SwipeableDrawer
-        anchor="right"
-        open={filterType !== ''}
-        onClose={() => toggleTableFilter('')}
-      >
-        <FilterContent>
-          {filterType === 'column' && (
-            <FilterContentBlock>
-              {isDownload && (<SelectFileType>
-                <Select
-                  value={fileType}
-                  onChange={onFileTypeChange}
-                  input={<BootstrapInput name="fileType" id="file-customized-select" />}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value="EXCEL">
-                    <FilterFileType>
-                      <div>EXCEL</div>
-                      <HeaderCheck><i className="fa fa-check" aria-hidden="true" /></HeaderCheck>
-                    </FilterFileType>
-                  </MenuItem>
-                  <MenuItem value="CSV">
-                    <FilterFileType>
-                      <div>CSV</div>
-                      <HeaderCheck><i className="fa fa-check" aria-hidden="true" /></HeaderCheck>
-                    </FilterFileType>
-                  </MenuItem>
-                </Select>
-              </SelectFileType>)}
-              <FormGroup row>
-                <FormGroup column>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={days.includes("30 Days")}
-                          onChange={handleSwitchChange}
-                          value="30 Days"
-                          classes={{
-                            switchBase: classes.colorSwitchBase,
-                            checked: classes.colorChecked,
-                            bar: classes.colorBar,
-                          }}
-                        />
-                      }
-                      label={<SwitchDrawerText>30 Days</SwitchDrawerText>}
-                    />
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={days.includes("90 Days")}
-                          onChange={handleSwitchChange}
-                          value="90 Days"
-                          classes={{
-                            switchBase: classes.colorSwitchBase,
-                            checked: classes.colorChecked,
-                            bar: classes.colorBar,
-                          }}
-                        />
-                      }
-                      label={<SwitchDrawerText>90 Days</SwitchDrawerText>}
-                    />
-                </FormGroup>
-                <FormGroup column>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={days.includes("Mail Order")}
-                          onChange={handleSwitchChange}
-                          value="Mail Order"
-                          classes={{
-                            switchBase: classes.colorSwitchBase,
-                            checked: classes.colorChecked,
-                            bar: classes.colorBar,
-                          }}
-                        />
-                      }
-                      label={<SwitchDrawerText>Mail Order</SwitchDrawerText>}
-                    />
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={days.includes("Retail Order")}
-                          onChange={handleSwitchChange}
-                          value="Retail Order"
-                          classes={{
-                            switchBase: classes.colorSwitchBase,
-                            checked: classes.colorChecked,
-                            bar: classes.colorBar,
-                          }}
-                        />
-                      }
-                      label={<SwitchDrawerText>Retail</SwitchDrawerText>}
-                    />
-                </FormGroup>
+  } = props || {};
+  // console.log(exHeadersNames, filterLeft);
+  return (
+    <SwipeableDrawer
+      anchor="right"
+      open={filterType !== ''}
+      onOpen={() => {}}
+      onClose={() => toggleTableFilter('')}
+    >
+      <FilterContent>
+        {filterType === 'column' && (
+          <FilterContentBlock>
+            {/* {isDownload && (<SelectFileType>
+              <Select
+                value={fileType}
+                onChange={onFileTypeChange}
+                input={<BootstrapInput name="fileType" id="file-customized-select" />}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value="EXCEL">
+                  <FilterFileType>
+                    <div>EXCEL</div>
+                    <HeaderCheck><i className="fa fa-check" aria-hidden="true" /></HeaderCheck>
+                  </FilterFileType>
+                </MenuItem>
+                <MenuItem value="CSV">
+                  <FilterFileType>
+                    <div>CSV</div>
+                    <HeaderCheck><i className="fa fa-check" aria-hidden="true" /></HeaderCheck>
+                  </FilterFileType>
+                </MenuItem>
+              </Select>
+            </SelectFileType>)}
+            <FormGroup row>
+              <FormGroup column>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={days.includes("30 Days")}
+                        onChange={handleSwitchChange}
+                        value="30 Days"
+                        classes={{
+                          switchBase: classes.colorSwitchBase,
+                          checked: classes.colorChecked,
+                          bar: classes.colorBar,
+                        }}
+                      />
+                    }
+                    label={<SwitchDrawerText>30 Days</SwitchDrawerText>}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={days.includes("90 Days")}
+                        onChange={handleSwitchChange}
+                        value="90 Days"
+                        classes={{
+                          switchBase: classes.colorSwitchBase,
+                          checked: classes.colorChecked,
+                          bar: classes.colorBar,
+                        }}
+                      />
+                    }
+                    label={<SwitchDrawerText>90 Days</SwitchDrawerText>}
+                  />
               </FormGroup>
-              <b>Table Columns Selection</b>
-              <FilterHeaderPaper>
-                <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
-                  {
-                    <Fragment>
-                      <FilterCell name="Select All" onClick={filterHeaderClick}>
-                        <div>{!exHeadersNames.includes('Select All') ? 'Select All' : 'Deselect All'}</div>
-                      </FilterCell>
-                      {Array.isArray(filterLeft) && filterLeft.map(name =>
-                        <FilterCell name={name} onClick={filterHeaderClick} style={{ color: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '#777': 'black'}`, cursor: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '' : 'pointer'}` }}>
-                          <div>{name}</div>
-                          {!exHeadersNames.includes(name) &&
-                          <HeaderCheck>
-                            <i className="fa fa-check" aria-hidden="true" />
-                          </HeaderCheck>}
-                        </FilterCell>
-                      )}
-                    </Fragment>
-                  }
-                </Paper>
-                <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
-                  {
-                    Array.isArray(filterRight) && filterRight.map(name => 
-                      <FilterCell name={`${Array.isArray(days) && days.length < 2 ? null : name}`} onClick={filterHeaderClick} className={`${Array.isArray(days) && days.length < 2 ? 'disabled' : ''}`} style={{ color: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '#777': 'black'}`, cursor: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '' : 'pointer'}` }}>
+              <FormGroup column>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={days.includes("Mail Order")}
+                        onChange={handleSwitchChange}
+                        value="Mail Order"
+                        classes={{
+                          switchBase: classes.colorSwitchBase,
+                          checked: classes.colorChecked,
+                          bar: classes.colorBar,
+                        }}
+                      />
+                    }
+                    label={<SwitchDrawerText>Mail Order</SwitchDrawerText>}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={days.includes("Retail Order")}
+                        onChange={handleSwitchChange}
+                        value="Retail Order"
+                        classes={{
+                          switchBase: classes.colorSwitchBase,
+                          checked: classes.colorChecked,
+                          bar: classes.colorBar,
+                        }}
+                      />
+                    }
+                    label={<SwitchDrawerText>Retail</SwitchDrawerText>}
+                  />
+              </FormGroup>
+            </FormGroup> */}
+            <b>Table Columns Selection</b>
+            <FilterHeaderPaper>
+              <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
+                {
+                  <Fragment>
+                    <FilterCell name="Select All" onClick={filterHeaderClick}>
+                      <div>{!exHeadersNames.includes('Select All') ? 'Select All' : 'Deselect All'}</div>
+                    </FilterCell>
+                    {Array.isArray(filterLeft) && filterLeft.map(name =>
+                      <FilterCell key={name} name={name} onClick={filterHeaderClick} style={{ color: 'black', cursor: 'pointer' }}>
+                        {/* style={{ color: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '#777': 'black'}`, cursor: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '' : 'pointer'}` }} */}
                         <div>{name}</div>
-                          {!exHeadersNames.includes(name) && (Array.isArray(days) && days.length >= 2) &&
-                          <HeaderCheck>
-                            <i className="fa fa-check" aria-hidden="true" />
-                          </HeaderCheck>}
+                        {!exHeadersNames.includes(name) &&
+                        <HeaderCheck>
+                          <i className="fa fa-check" aria-hidden="true" />
+                        </HeaderCheck>}
                       </FilterCell>
-                    )
-                  }
-                </Paper>
-              </FilterHeaderPaper>
-            </FilterContentBlock>
-          )}
-          {filterType === 'search' && (
-            <FilterContentBlock>
-              data comes here
-            </FilterContentBlock>
-          )}
-        </FilterContent>
-      </SwipeableDrawer>
-    );
+                    )}
+                  </Fragment>
+                }
+              </Paper>
+              <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
+                {
+                  Array.isArray(filterRight) && filterRight.map(name => 
+                    <FilterCell key={name} name={`${Array.isArray(days) && days.length < 2 ? null : name}`} onClick={filterHeaderClick} className={`${Array.isArray(days) && days.length < 2 ? 'disabled' : ''}`} style={{ color: 'black', cursor: 'pointer' }}>
+                      <div>{name}</div>
+                        {!exHeadersNames.includes(name) && (Array.isArray(days) && days.length >= 2) &&
+                        <HeaderCheck>
+                          <i className="fa fa-check" aria-hidden="true" />
+                        </HeaderCheck>}
+                    </FilterCell>
+                  )
+                }
+              </Paper>
+            </FilterHeaderPaper>
+          </FilterContentBlock>
+        )}
+        {filterType === 'search' && (
+          <FilterContentBlock>
+            data comes here
+          </FilterContentBlock>
+        )}
+      </FilterContent>
+    </SwipeableDrawer>
+  );
 }
 
 export default withStyles(styles)(TableFilter);

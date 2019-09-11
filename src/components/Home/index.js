@@ -6,6 +6,7 @@ import * as Styles from '../../common/Table/SharedStyles';
 import {
   manageDays,
   getData,
+  setFilters,
 } from '../../actions/getAllData';
 
 import PageHeader from './PageHeader';
@@ -34,20 +35,20 @@ class Home extends Component {
       this.props.getData();
     }
 
-    onFileTypeChange = ({ target: { value } }) => {
-      console.log(value);
-    }
+    // onFileTypeChange = ({ target: { value } }) => {
+    //   console.log(value);
+    // }
 
-    handleSwitchChange = ({ target: { value } }) => {
-        let { days = [] } = this.props;
-        if (days.includes(value)) {
-            days = days.filter(one => one !== value)
-        } else {
-            days.push(value);
-        }
-        this.props.manageDays(days);
-        this.setState({ order: '' });
-    }
+    // handleSwitchChange = ({ target: { value } }) => {
+    //     let { days = [] } = this.props;
+    //     if (days.includes(value)) {
+    //         days = days.filter(one => one !== value)
+    //     } else {
+    //         days.push(value);
+    //     }
+    //     this.props.manageDays(days);
+    //     this.setState({ order: '' });
+    // }
 
 
     toggleTableFilter = (filterType, isDownload) => {
@@ -75,38 +76,36 @@ class Home extends Component {
           }
           return this.setState({ excludeHeaders, exHeadersNames, days });
         }
-        if (pinned.includes(name.toLowerCase().replace(/ /g,'_'))) return;
-        if (exHeadersNames.includes(name)) exHeadersNames = exHeadersNames.filter(one => one !== name);
+        // if (pinned.includes(name.toLowerCase().replace(/ /g,'_'))) return;
+        const posName = exHeadersNames.indexOf(name);
+        if (posName > -1) exHeadersNames.splice(posName, 1);
         else exHeadersNames.push(name.trim());
-        if(name.indexOf('Preferred Tier ') > -1) name = name.replace('Preferred Tier ', 'PT:');
-        else if(name.indexOf('Standard Tier ') > -1) name = name.replace('Standard Tier ', 'ST:');
-        else name = name.toLowerCase().replace(/ /g, '_');
-        if (excludeHeaders.includes(name)) excludeHeaders = excludeHeaders.filter(one => one !== name);
+        // if(name.indexOf('Preferred Tier ') > -1) name = name.replace('Preferred Tier ', 'PT:');
+        // else if(name.indexOf('Standard Tier ') > -1) name = name.replace('Standard Tier ', 'ST:');
+        // else 
+        name = name.toLowerCase().replace(/ /g, '_');
+        const posHead = excludeHeaders.indexOf(name);
+        if (posHead > -1) excludeHeaders.splice(posHead, 1);
         else excludeHeaders.push(name.trim());
-        this.setState({ excludeHeaders, exHeadersNames });
+        this.props.setFilters(excludeHeaders);
+        return this.setState({ excludeHeaders, exHeadersNames, days });
       }
     }
 
     getFilterHeaders = () => {
-      let filterHeaderNames = [];
-      const { table: { state: { headers = [], pinned = [] } = {} } = {} } = this.refs || {};
-        const filterHeaders = headers.filter(({ name, value }) => {
-          if (name.indexOf(' - ') > -1) {
-            const tierType = (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '');
-            if (filterHeaderNames.includes(tierType.trim())) return false;
-            else filterHeaderNames.push(tierType.trim());
-            return true;
-          } else filterHeaderNames.push(name); 
-          return true;
-        });
-
-        return JSON.parse(JSON.stringify(filterHeaderNames).replace(/PT:/g, 'Preferred Tier ').replace(/ST:/g, 'Standard Tier '));
+      // let filterHeaderNames = [];
+      const { Data: { headers = [] } } = this.props || {};
+      const filterHeaders = Array.isArray(headers) ? headers.map(({ name, value }) => {
+        return name;
+      }) : [];
+      return filterHeaders;
+      // return JSON.parse(JSON.stringify(filterHeaderNames).replace(/PT:/g, 'Preferred Tier ').replace(/ST:/g, 'Standard Tier '));
     }
 
-    onDownloadClick() {
-      console.log(this);
-      this.setState({ isDownload: !this.state.isDownload });
-    }
+    // onDownloadClick() {
+    //   console.log(this);
+    //   this.setState({ isDownload: !this.state.isDownload });
+    // }
 
     render() {
         const {
@@ -115,20 +114,18 @@ class Home extends Component {
           isDownload,
         } = this.state;
         const { Data } = this.props;
-        console.log(this.props);
-        const { table: { state: { headers = [], pinned = [] } = {} } = {} } = this.refs || {};
-        const filterHeaderNames = this.getFilterHeaders();
-        let filterLeft = filterHeaderNames.map(one=>one);
-        filterLeft = filterHeaderNames.length > 10 && filterLeft.splice(0,10);
-        let filterRight = filterHeaderNames.map(one=>one);
-        filterRight = filterHeaderNames.length > 10 && filterRight.splice(10);
-
+        // const { table: { state: { headers = [], pinned = [] } = {} } = {} } = this.refs || {};
+        const headers = this.getFilterHeaders();
+        let filterLeft = [...headers];
+        filterLeft = headers.length > 10 ? filterLeft.splice(0,10) : [...filterLeft];
+        let filterRight = headers.map(one=>one);
+        filterRight = headers.length > 10 ? filterRight.splice(10) : [];
         return ( 
             <Fragment>
               <PageHeader onSwitchChange={this.handleSwitchChange} days={Data.days} onTableToggle={this.toggleTableFilter} />
               <MaindataContainer>
                 <TableContainer>
-                  <Table ref="table" hasPinnedColumns order={order} exclude={excludeHeaders} />
+                  <Table ref="table" order={order} />
                 </TableContainer>
               </MaindataContainer>
               <TableFilter
@@ -139,7 +136,7 @@ class Home extends Component {
                 handleSwitchChange={this.handleSwitchChange}
                 toggleTableFilter={this.toggleTableFilter}
                 filterHeaderClick={this.filterHeaderClick}
-                pinned={pinned}
+                // pinned={pinned}
                 exHeadersNames={exHeadersNames}
                 fileType={fileType}
                 isDownload={isDownload}
@@ -157,6 +154,7 @@ const mapStateToProps = (state) => ({
 const dispatchToProps = {
   manageDays,
   getData,
+  setFilters,
 }
  
 export default connect(mapStateToProps, dispatchToProps)(Home);

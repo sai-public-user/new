@@ -5,6 +5,7 @@ import {
     SUCCESS_ROWS_DATA,
     ERROR_ROWS_DATA,
     REQUEST_ROWS_DATA,
+    SET_FILTER_DATA,
 } from '../actionTypes';
 import axios from 'axios';
   
@@ -30,9 +31,14 @@ const manageDays = data => (dispatch) => {
             dispatch({ type: ERROR_ROWS_DATA, payload: err });
         });
     };
+
+    const setFilters = (data) => (dispatch) => {
+        dispatch({ type: SET_FILTER_DATA, payload: data });
+    }
   
     
     export {
         manageDays,
         getData,
+        setFilters,
     };

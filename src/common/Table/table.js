@@ -38,56 +38,56 @@ class Table extends Component {
     componentDidMount() {
     }
 
-    isPinned = (e) => {
-        const { pinned = [], maxPinnedcols, headers } = this.state;
-        let newPinned = pinned.map(o => o);
-        if (newPinned.includes(e.currentTarget.getAttribute('name'))) {
-            newPinned = newPinned.filter(one => one != e.currentTarget.getAttribute('name'))
-        } else {
-            newPinned.push(e.currentTarget.getAttribute('name'));
-        }
-        if (Array.isArray(newPinned) && newPinned.length > maxPinnedcols) return;
-        this.setState({ pinned: newPinned }, () => {
-            const pinnedHeaders = Array.isArray(newPinned) && headers.filter(one => newPinned.includes(one.value));
-            this.setState({ pinnedHeaders });
-        });
-    }
+    // isPinned = (e) => {
+    //     const { pinned = [], maxPinnedcols, headers } = this.state;
+    //     let newPinned = pinned.map(o => o);
+    //     if (newPinned.includes(e.currentTarget.getAttribute('name'))) {
+    //         newPinned = newPinned.filter(one => one != e.currentTarget.getAttribute('name'))
+    //     } else {
+    //         newPinned.push(e.currentTarget.getAttribute('name'));
+    //     }
+    //     if (Array.isArray(newPinned) && newPinned.length > maxPinnedcols) return;
+    //     this.setState({ pinned: newPinned }, () => {
+    //         const pinnedHeaders = Array.isArray(newPinned) && headers.filter(one => newPinned.includes(one.value));
+    //         this.setState({ pinnedHeaders });
+    //     });
+    // }
 
-    rowCheckBoxChange = ({ target: { name = "" } = {} }) => {
-        let { checked = [], compareLimit = 2 } = this.state;
-        if (checked.includes(Number(name))) {
-            checked = checked.filter(one => one != Number(name))
-        } else {
-            checked.push(Number(name));
-        }
-        if( checked.length > compareLimit ) return;
-        this.setState({ checked });
-    }
+    // rowCheckBoxChange = ({ target: { name = "" } = {} }) => {
+    //     let { checked = [], compareLimit = 2 } = this.state;
+    //     if (checked.includes(Number(name))) {
+    //         checked = checked.filter(one => one != Number(name))
+    //     } else {
+    //         checked.push(Number(name));
+    //     }
+    //     if( checked.length > compareLimit ) return;
+    //     this.setState({ checked });
+    // }
 
     getHeaders = (tableCols, days = [], order = '') => {
-		const { exclude } = this.props;
-        const { pinned } = this.state;
-        console.log(this.props);
+		const { exclude } = this.props.Data;
+        // const { pinned } = this.state;
+        // if (Array.isArray(pinned) && pinned.includes(value)) return false;
+        // const valueData = name.indexOf(' - ') > -1 ? name.split(' - ')[0] : value;
+        // const tier = Array.isArray(name.split(' - ')) && name.split(' - ').length > 1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '').trim() : '';
+        // const valueIfDays = name.replace(valueData, '').length > 0 ? name.replace(valueData, '').replace(tier,'').replace('-','').trim() : name;
+        // //name.indexOf(' - ') > -1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '').trim() : 
+        // console.log(exclude, value);
+        // if(Array.isArray(exclude) && exclude.includes(value)) return false;
+        // if (Array.isArray(days) && days.includes(valueIfDays) && days.includes(valueData)) {
+        //     return name.indexOf(order) > -1;
+        // } else if(name.indexOf('Days') === -1) return true;
         if(tableCols.length > 0) {
-            const headers = tableCols.filter(({ name, value }) => {
-				if (Array.isArray(pinned) && pinned.includes(value)) return false;
-                const valueData = name.indexOf(' - ') > -1 ? name.split(' - ')[0] : value;
-                const tier = Array.isArray(name.split(' - ')) && name.split(' - ').length > 1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '').trim() : '';
-                const valueIfDays = name.replace(valueData, '').length > 0 ? name.replace(valueData, '').replace(tier,'').replace('-','').trim() : name;
-                if(Array.isArray(exclude) && exclude.includes(name.indexOf(' - ') > -1 ? (name.split(' - ')[1]).replace('30 Days', '').replace('90 Days', '').trim() : value)) return false;
-                if (Array.isArray(days) && days.includes(valueIfDays) && days.includes(valueData)) {
-                    return name.indexOf(order) > -1;
-                } else if(name.indexOf('Days') === -1) return true;
-            });
+            const headers = tableCols.filter(({ value }) => !exclude.includes(value));
             return headers;
         }
     }
 
-    compareClicked = () => {
-        const { checked, rows } = this.state;
-        const compareRows = rows.filter(({ id }) => checked.includes(id));
-        this.setState({ compareRows, showCmpDialog: true })
-    }
+    // compareClicked = () => {
+    //     const { checked, rows } = this.state;
+    //     const compareRows = rows.filter(({ id }) => checked.includes(id));
+    //     this.setState({ compareRows, showCmpDialog: true })
+    // }
 
     sortOrder = (row1, row2, type, value) => {
         if (type === 'asc') {
@@ -113,34 +113,34 @@ class Table extends Component {
         this.setState({ sortedCol, rows });
     }
 
-    closeDialog = () => this.setState({ showCmpDialog: false });
+    // closeDialog = () => this.setState({ showCmpDialog: false });
 
-    scrollInterval = 0;
-    scrollTable = '';
+    // scrollInterval = 0;
+    // scrollTable = '';
 
-    scrolled = (scrollTop, name) => {
-        let scrollVal = scrollTop;
-        if(this.scrollInterval < (Date.now() - 150)) {
-            this.scrollInterval = Date.now();
-            this.scrollTable = name;
-        }
-        if(this.scrollTable === 'main' && this.refs.pinned) 
-        this.refs.pinned.refs.tbody.scrollTo(0, scrollVal);
-        if (this.scrollTable === 'pinned')
-        this.refs.tbody.scrollTo(0, scrollVal); //.scrollTop = scrollVal;
-    }
+    // scrolled = (scrollTop, name) => {
+    //     let scrollVal = scrollTop;
+    //     if(this.scrollInterval < (Date.now() - 150)) {
+    //         this.scrollInterval = Date.now();
+    //         this.scrollTable = name;
+    //     }
+    //     if(this.scrollTable === 'main' && this.refs.pinned) 
+    //     this.refs.pinned.refs.tbody.scrollTo(0, scrollVal);
+    //     if (this.scrollTable === 'pinned')
+    //     this.refs.tbody.scrollTo(0, scrollVal); //.scrollTop = scrollVal;
+    // }
 
-    headerCheckBoxChange = (e) => {
-        let { headerCheck = false } = this.state;
-        const { rows } = this.state;
-        let checked = [];
-        headerCheck =  !headerCheck;
-        if (headerCheck === false) {
-            return this.setState({ headerCheck, checked });
-        }
-        checked = rows.map((_, i) => i);
-        this.setState({ headerCheck, checked });
-    }
+    // headerCheckBoxChange = (e) => {
+    //     let { headerCheck = false } = this.state;
+    //     const { rows } = this.state;
+    //     let checked = [];
+    //     headerCheck =  !headerCheck;
+    //     if (headerCheck === false) {
+    //         return this.setState({ headerCheck, checked });
+    //     }
+    //     checked = rows.map((_, i) => i);
+    //     this.setState({ headerCheck, checked });
+    // }
 
     render() {
         const {
@@ -155,10 +155,10 @@ class Table extends Component {
         const { days = [], hasPinnedColumns } = this.props;
         const { headers, rows } = this.props.Data;
         const filteredHeaders = this.getHeaders(headers, days);
-        const compareHeaders = Array.isArray(filteredHeaders) && Array.isArray(pinnedHeaders) ? filteredHeaders.concat(pinnedHeaders) : [];
+        // const compareHeaders = Array.isArray(filteredHeaders) && Array.isArray(pinnedHeaders) ? filteredHeaders.concat(pinnedHeaders) : [];
         return (
             <Fragment>
-                {hasPinnedColumns && pinnedHeaders.length > 0 && (
+                {/* {hasPinnedColumns && pinnedHeaders.length > 0 && (
                     <PinnedTable
                         pinnedHeaders={pinnedHeaders}
                         sortedCol={sortedCol}
@@ -175,36 +175,26 @@ class Table extends Component {
                         checkBoxChange={this.headerCheckBoxChange}
                         checkBox={headerCheck}
                         ref="pinned"
-                    />)}
+                    />)} */}
                 <div style={{ width: `${100 - (pinnedHeaders.length * 18 + pinnedHeaders.length)}%`, overflowX: 'scroll', overflowY: 'hidden', position: 'relative' }}>
-                    <Fragment className="table-head">
-                        <CustomTable>
-                            <HeaderData>
-                                <Header sortedCol={sortedCol} checkBoxChange={this.headerCheckBoxChange} checkBox={headerCheck} onCellClick={this.onCellClick} headers={filteredHeaders} compare={this.compareClicked} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} />
-                            </HeaderData>
-                        </CustomTable>
-                    </Fragment>
-                    <Fragment className="table-body">
-                        <CustomTable>
-                            <Rows style={{ overflowX: 'visible', overflowY: 'scroll' }} ref="tbody" onScroll={() => this.scrolled(this.refs.tbody.scrollTop, 'main')}>
-                                {Array.isArray(rows) && rows.length > 0 ? rows.map(
-                                    (row, i) => <Row checked={checked} checkBoxChange={this.rowCheckBoxChange} row={row} key={i} headers={filteredHeaders} pinned={pinned} />
-                                ) : (
-                                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                        <CircularProgress disableShrink />
-                                        <span>Loading Data...</span>
-                                    </div>
-                                )}
-                            </Rows>
-			            </CustomTable>
-                    </Fragment>
+                    <CustomTable>
+                        <HeaderData>
+                            {/* compare={this.compareClicked} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} checkBoxChange={this.headerCheckBoxChange} checkBox={headerCheck} */}
+                            <Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={filteredHeaders} noCompare />
+                        </HeaderData>
+                        <Rows ref="tbody">
+                            {/*style={{ overflowX: 'visible', overflowY: 'scroll' }} checkBoxChange={this.rowCheckBoxChange} checked={checked} pinned={pinned} onScroll={() => this.scrolled(this.refs.tbody.scrollTop, 'main')}*/}
+                            {Array.isArray(rows) && rows.length > 0 ? rows.map(
+                                (row, i) => <Row noCompare row={row} key={i} headers={filteredHeaders} />
+                            ) : (
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    <CircularProgress disableShrink />
+                                    <span>Loading Data...</span>
+                                </div>
+                            )}
+                        </Rows>
+			        </CustomTable>
                 </div>
-                <DialogTable
-                    showCmpDialog={showCmpDialog}
-                    closeDialog={this.closeDialog}
-                    compareRows={compareRows}
-                    compareHeaders={compareHeaders}
-                />
             </Fragment>
         );
     }

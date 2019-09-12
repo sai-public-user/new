@@ -68,9 +68,9 @@ const Header = styled.div `
     justify-content: space-between;
 `;
 
+//margin-top: 1rem;
 const TableFilters = styled.div `
-    margin-top: 1rem;
-    margin-right: 1rem;
+    margin-right: 2.5rem;
     flex-wrap: wrap;
     display: flex;
     align-items: center;

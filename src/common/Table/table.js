@@ -153,8 +153,15 @@ class Table extends Component {
             headerCheck,
         } = this.state;
         const { days = [], hasPinnedColumns } = this.props;
-        const { headers, rows } = this.props.Data;
+        const { headers, rows: rawRows = [], normalize } = this.props.Data;
         const filteredHeaders = this.getHeaders(headers, days);
+        const rows = Array.isArray(rawRows)&& rawRows.map(row => {
+            const rawRow = {...row, ...row[normalize]};
+            delete rawRow.normalizedMetrics;
+            delete rawRow.nonNormalizedMetrics;
+            return rawRow;
+        });
+
         // const compareHeaders = Array.isArray(filteredHeaders) && Array.isArray(pinnedHeaders) ? filteredHeaders.concat(pinnedHeaders) : [];
         return (
             <Fragment>

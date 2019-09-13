@@ -22,15 +22,25 @@ const {
 
 function Cell(props) {
     const { data = null, endPosition = -1, name, title } = props;
-    const cellData = (
+    let cellData = (
         <TableRowCell title={title} className={`${endPosition > 0 ? ' last_cell' : ''}`} name={name}>
             {data !== null && (data.length > 0 || typeof data === 'number') ? data : '-'}
         </TableRowCell>
     );
+    if (title === 'prescriberName' && data !== null && data.length > 0 && typeof data === 'string') {
+        cellData = (
+            <TableRowCell title={title} className={`${endPosition > 0 ? ' last_cell' : ''}`} name={name}>
+                <div>
+                    <div>{data.split('#')[0]}</div>
+                    <div>#{data.split('#')[1]}</div>
+                </div>
+            </TableRowCell>
+        )
+    }
     if(title === 'prescriberName') {
         return (
             <HtmlTooltip title={<Typography color="inherit"><h5>{title}</h5></Typography>}>
-                {cellData}
+               {cellData}
             </HtmlTooltip>
         )
     }

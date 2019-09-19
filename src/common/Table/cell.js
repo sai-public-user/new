@@ -27,7 +27,7 @@ function Cell(props) {
             {data !== null && (data.length > 0 || typeof data === 'number') ? data : '-'}
         </TableRowCell>
     );
-    if (title === 'prescriberName' && data !== null && data.length > 0 && typeof data === 'string') {
+    if (title === 'prescriberName' && data !== null && data.length > 0 && typeof data === 'string' && data.indexOf('#') > -1) {
         cellData = (
             <TableRowCell title={title} className={`${endPosition > 0 ? ' last_cell' : ''}`} name={name}>
                 <div>

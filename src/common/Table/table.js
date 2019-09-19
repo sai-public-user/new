@@ -4,8 +4,14 @@ import Header from './header';
 import Row from './row';
 import './table.css';
 import * as Styles from '../../common/Table/SharedStyles';
+import * as CSS from '../../common/Table/TableStyles';
 import PropTypes from 'prop-types';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import {
+    CircularProgress,
+    TableBody,
+    Chip,
+} from '@material-ui/core';
+import Done from '@material-ui/icons/Done';
 
 
 import PinnedTable from './PinnedTable';
@@ -32,6 +38,7 @@ class Table extends Component {
             showCmpDialog: false,
             sortedCol: {},
             headerCheck: false,
+            showBenchmark: true,
         };
     }
 
@@ -142,6 +149,11 @@ class Table extends Component {
     //     this.setState({ headerCheck, checked });
     // }
 
+    handleBenchmark = () => {
+        const { showBenchmark } = this.state;
+        this.setState({ showBenchmark: !showBenchmark })
+    }
+
     render() {
         const {
             pinned, checked,
@@ -151,6 +163,7 @@ class Table extends Component {
             sortedCol,
             Table,
             headerCheck,
+            showBenchmark = false,
         } = this.state;
         const { days = [], hasPinnedColumns } = this.props;
         const { headers, rows: rawRows = [], normalize } = this.props.Data;
@@ -161,6 +174,9 @@ class Table extends Component {
             delete rawRow.nonNormalizedMetrics;
             return rawRow;
         });
+
+        const mainRows = [...rows];
+        mainRows.splice(0,1);
 
         // const compareHeaders = Array.isArray(filteredHeaders) && Array.isArray(pinnedHeaders) ? filteredHeaders.concat(pinnedHeaders) : [];
         return (
@@ -184,14 +200,20 @@ class Table extends Component {
                         ref="pinned"
                     />)} */}
                 <div style={{ width: `${100 - (pinnedHeaders.length * 18 + pinnedHeaders.length)}%`, overflowX: 'scroll', overflowY: 'hidden', position: 'relative' }}>
-                    <CustomTable>
-                        <HeaderData>
+                    <CSS.StyledTable>
+                        <CSS.StyledTableHead>
                             {/* compare={this.compareClicked} hasPinnedColumns pinned={pinned} isPinned={this.isPinned} checkBoxChange={this.headerCheckBoxChange} checkBox={headerCheck} */}
                             <Header sortedCol={sortedCol} onCellClick={this.onCellClick} headers={filteredHeaders} noCompare />
-                        </HeaderData>
-                        <Rows ref="tbody">
-                            {/*style={{ overflowX: 'visible', overflowY: 'scroll' }} checkBoxChange={this.rowCheckBoxChange} checked={checked} pinned={pinned} onScroll={() => this.scrolled(this.refs.tbody.scrollTop, 'main')}*/}
-                            {Array.isArray(rows) && rows.length > 0 ? rows.map(
+                        </CSS.StyledTableHead>
+                        {showBenchmark && (<Row noCompare row={rows[0]} headers={filteredHeaders} />)}
+                        <div style={{ marginBottom: 20, marginTop: 20, justifyContent: 'center', display: 'flex' }}>
+                            {/* <Chip size="small" label="Benchmark" style={{ padding: '1rem', position: 'absolute' }} deleteIcon={<Done />} onDelete={this.handleBenchmark} />
+                            <hr/> */}
+                            <div onClick={this.handleBenchmark} style={{ width: 'fit-content', background: '#ccc', padding: 3, broderRadius: '12px' }}>Benchmark -</div>
+                        </div>
+                        <TableBody ref="tbody">
+                            {/*style={{ overflowY: 'scroll' }} checkBoxChange={this.rowCheckBoxChange} checked={checked} pinned={pinned} onScroll={() => this.scrolled(this.refs.tbody.scrollTop, 'main')}*/}
+                            {Array.isArray(mainRows) && mainRows.length > 0 ? mainRows.map(
                                 (row, i) => <Row noCompare row={row} key={i} headers={filteredHeaders} />
                             ) : (
                                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -199,8 +221,8 @@ class Table extends Component {
                                     <span>Loading Data...</span>
                                 </div>
                             )}
-                        </Rows>
-			        </CustomTable>
+                        </TableBody>
+			        </CSS.StyledTable>
                 </div>
             </Fragment>
         );

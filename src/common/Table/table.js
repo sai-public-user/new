@@ -180,7 +180,7 @@ class Table extends Component {
 
         // const compareHeaders = Array.isArray(filteredHeaders) && Array.isArray(pinnedHeaders) ? filteredHeaders.concat(pinnedHeaders) : [];
         return (
-            <Fragment>
+            <div className="total-table">
                 {/* {hasPinnedColumns && pinnedHeaders.length > 0 && (
                     <PinnedTable
                         pinnedHeaders={pinnedHeaders}
@@ -224,7 +224,7 @@ class Table extends Component {
                         </TableBody>
 			        </CSS.StyledTable>
                 </div>
-            </Fragment>
+            </div>
         );
     }
 }

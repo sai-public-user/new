@@ -85,7 +85,7 @@ class Table extends Component {
         //     return name.indexOf(order) > -1;
         // } else if(name.indexOf('Days') === -1) return true;
         if(tableCols.length > 0) {
-            const headers = tableCols.filter(({ value }) => !exclude.includes(value));
+            const headers = tableCols.filter(({ name, value }) => exclude.includes(value) || exclude.includes(name));
             return headers;
         }
     }
@@ -180,7 +180,7 @@ class Table extends Component {
 
         // const compareHeaders = Array.isArray(filteredHeaders) && Array.isArray(pinnedHeaders) ? filteredHeaders.concat(pinnedHeaders) : [];
         return (
-            <div className="total-table">
+            <Fragment>
                 {/* {hasPinnedColumns && pinnedHeaders.length > 0 && (
                     <PinnedTable
                         pinnedHeaders={pinnedHeaders}
@@ -224,7 +224,7 @@ class Table extends Component {
                         </TableBody>
 			        </CSS.StyledTable>
                 </div>
-            </div>
+            </Fragment>
         );
     }
 }

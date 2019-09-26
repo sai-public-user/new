@@ -12,6 +12,7 @@ import {
 import PageHeader from './PageHeader';
 import Table from '../../common/Table/table';
 import TableFilter from './TableFilter';
+import ColumnFilter from './columnFilter';
 
 const {
     MaindataContainer,
@@ -33,6 +34,7 @@ class Home extends Component {
 
     componentDidMount() {
       this.props.getData();
+      this.props.setFilters(this.getFilterHeaders().map(({name}) => name))
     }
 
     // onFileTypeChange = ({ target: { value } }) => {
@@ -93,11 +95,10 @@ class Home extends Component {
     }
 
     getFilterHeaders = () => {
-      // let filterHeaderNames = [];
+      // let filterHeaderNames = []
+      const { excludeHeaders } = this.state;
       const { Data: { headers = [] } } = this.props || {};
-      const filterHeaders = Array.isArray(headers) ? headers.map(({ name, value }) => {
-        return name;
-      }) : [];
+      const filterHeaders = Array.isArray(headers) ? [...headers] : [];
       return filterHeaders;
       // return JSON.parse(JSON.stringify(filterHeaderNames).replace(/PT:/g, 'Preferred Tier ').replace(/ST:/g, 'Standard Tier '));
     }
@@ -106,6 +107,12 @@ class Home extends Component {
     //   console.log(this);
     //   this.setState({ isDownload: !this.state.isDownload });
     // }
+
+    onSwipeApply = (data, type) => {
+      if (type === 'column') {
+        this.props.setFilters(data);
+      }
+    }
 
     render() {
         const {
@@ -128,7 +135,13 @@ class Home extends Component {
                   <Table ref="table" order={order} />
                 </TableContainer>
               </MaindataContainer>
-              <TableFilter
+              <ColumnFilter
+                filterType={filterType}
+                columns={headers}
+                toggleTableFilter={this.toggleTableFilter}
+                setColumnFilter={this.onSwipeApply}
+              />
+              {/* <TableFilter
                 filterType={filterType}
                 days={Data.days}
                 filterLeft={filterLeft}
@@ -141,7 +154,7 @@ class Home extends Component {
                 fileType={fileType}
                 isDownload={isDownload}
                 onFileTypeChange={this.onFileTypeChange}
-              />
+              /> */}
             </Fragment>
         );
     }

@@ -33,6 +33,7 @@ const manageDays = data => (dispatch) => {
     };
 
     const setFilters = (data) => (dispatch) => {
+        console.log(data);
         dispatch({ type: SET_FILTER_DATA, payload: data });
     }
   

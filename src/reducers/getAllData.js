@@ -129,7 +129,7 @@ const initalState = {
     //],
     rows: [],
     headers: [
-      { name: 'prescriberName', value: 'prescriberName' },
+      { name: 'Prescriber Name', value: 'prescriberName' },
       { name: 'prescriberMSO', value: 'prescriberMSO' },
       { name: 'prescriberPrimaryPractice', value: 'prescriberPrimaryPractice' },
       { name: 'prescriberPrimaryAddress', value: 'prescriberPrimaryAddress' },
@@ -199,6 +199,7 @@ const getAllData = (state = initalState, action) => {
         error: payload.error,
       };
     case SET_FILTER_DATA: 
+    console.log(payload);
     return {
       ...state,
       exclude: [ ...payload ],

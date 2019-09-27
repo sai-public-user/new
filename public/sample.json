@@ -109,7 +109,7 @@
     "costPerScript": 1,
     "extendedDaySuppleScriptPercentile": 1,
     "nonFormularyFillsPercentile": 0,
-    "totalFills": 1,
+    "totalFills": 0,
     "totalAllowed": 1,
     "genericEfficiencyRate": 0,
     "opioidFillsPercentile": 0,

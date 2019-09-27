@@ -2,6 +2,12 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import './styles.css';
 import * as Styles from '../../common/Table/SharedStyles';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+
 
 import {
   manageDays,
@@ -11,8 +17,23 @@ import {
 
 import PageHeader from './PageHeader';
 import Table from '../../common/Table/table';
-import TableFilter from './TableFilter';
 import ColumnFilter from './columnFilter';
+
+const TabPanel = (props) => {
+  const { children, value, index, ...other } = props;
+  return (
+    <Typography
+      component="div"
+      role="tabpanel"
+      hidden={value !== index}
+      id={`${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      <Box p={3}>{children}</Box>
+    </Typography>
+  );
+}
 
 const {
     MaindataContainer,
@@ -29,6 +50,7 @@ class Home extends Component {
             order: '',
             fileType: '',
             isDownload: false,
+            selectedTab: 0,
         }
     }
 
@@ -51,7 +73,6 @@ class Home extends Component {
     //     this.props.manageDays(days);
     //     this.setState({ order: '' });
     // }
-
 
     toggleTableFilter = (filterType, isDownload) => {
       this.setState({
@@ -114,47 +135,46 @@ class Home extends Component {
       }
     }
 
+    onTabChange = (e, selectedTab) => {
+      this.setState({ selectedTab });
+    }
+
+    getAllRowsData = () => {
+      const { filterType, order } = this.state;
+      const { Data } = this.props;
+      const headers = this.getFilterHeaders();
+      return (
+        <div>
+          <PageHeader onSwitchChange={this.handleSwitchChange} days={Data.days} onTableToggle={this.toggleTableFilter} />
+          <MaindataContainer>
+            <TableContainer>
+              <Table ref="table" order={order} />
+            </TableContainer>
+          </MaindataContainer>
+          <ColumnFilter
+            filterType={filterType}
+            columns={headers}
+            toggleTableFilter={this.toggleTableFilter}
+            setColumnFilter={this.onSwipeApply}
+          />
+        </div>
+      );
+    }
+
     render() {
-        const {
-          filterType, excludeHeaders,
-          exHeadersNames, order, fileType,
-          isDownload,
-        } = this.state;
-        const { Data } = this.props;
-        // const { table: { state: { headers = [], pinned = [] } = {} } = {} } = this.refs || {};
-        const headers = this.getFilterHeaders();
-        let filterLeft = [...headers];
-        filterLeft = headers.length > 10 ? filterLeft.splice(0,10) : [...filterLeft];
-        let filterRight = headers.map(one=>one);
-        filterRight = headers.length > 10 ? filterRight.splice(10) : [];
+        const { selectedTab: tab = 0 } = this.state;
         return ( 
             <Fragment>
-              <PageHeader onSwitchChange={this.handleSwitchChange} days={Data.days} onTableToggle={this.toggleTableFilter} />
-              <MaindataContainer>
-                <TableContainer>
-                  <Table ref="table" order={order} />
-                </TableContainer>
-              </MaindataContainer>
-              <ColumnFilter
-                filterType={filterType}
-                columns={headers}
-                toggleTableFilter={this.toggleTableFilter}
-                setColumnFilter={this.onSwipeApply}
-              />
-              {/* <TableFilter
-                filterType={filterType}
-                days={Data.days}
-                filterLeft={filterLeft}
-                filterRight={filterRight}
-                handleSwitchChange={this.handleSwitchChange}
-                toggleTableFilter={this.toggleTableFilter}
-                filterHeaderClick={this.filterHeaderClick}
-                // pinned={pinned}
-                exHeadersNames={exHeadersNames}
-                fileType={fileType}
-                isDownload={isDownload}
-                onFileTypeChange={this.onFileTypeChange}
-              /> */}
+               <AppBar position="static">
+                <Tabs value={tab} style={{ backgroundColor: '#678bca' }}  onChange={this.onTabChange} aria-label="simple tabs example">
+                  <Tab label="Item One" id="0" />
+                  <Tab label="Item Two" id="1" />
+                  <Tab label="Item Three" id="2" />
+                </Tabs>
+                {tab === 0 ? this.getAllRowsData() : null}
+                {tab === 1 ? 'Tab two' : null}
+                {tab === 2 ? 'Tab three' : null}
+              </AppBar>
             </Fragment>
         );
     }

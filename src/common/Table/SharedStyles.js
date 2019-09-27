@@ -115,6 +115,7 @@ const TableRow = styled.tr `
     background-color: #fff;
     background-clip: border-box;
     border-radius: 0.25rem;
+    color: black;
 `;
 
 const TableRowCell = styled.td `

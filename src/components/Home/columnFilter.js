@@ -110,7 +110,7 @@ class ColumnFilter extends Component {
                     data comes here
                   </FilterContentBlock>
                 )}
-                 <Button variant="contained" color="primary" onClick={this.onApply}>
+                 <Button style={{ marginTop: '2rem' }} variant="contained" color="primary" onClick={this.onApply}>
                    Apply
                  </Button>
             </FilterContent>

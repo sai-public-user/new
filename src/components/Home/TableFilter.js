@@ -1,231 +1,182 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import * as Styles from '../../common/Table/SharedStyles';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import { withStyles } from '@material-ui/core/styles';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputBase from '@material-ui/core/InputBase';
-
-const BootstrapInput = withStyles(theme => ({
-  input: {
-    borderRadius: 4,
-    position: 'relative',
-    backgroundColor: theme.palette.background.paper,
-    border: '1px solid #ced4da',
-    fontSize: 16,
-    padding: '10px 26px 10px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
-    '&:focus': {
-      borderRadius: 4,
-      borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-    },
-  },
-}))(InputBase);
-
-const styles = theme => ({
-	colorSwitchBase: {
-		color: '#0cb1c3',
-		'&$colorChecked': {
-			color: '#0cc324',
-			'& + $colorBar': {
-				backgroundColor: '#ffffff',
-			},
-		},
-	},
-	colorBar: {},
-	colorChecked: {},
-});
+import { green } from '@material-ui/core/colors';
+import moment from 'moment';
+import {
+    FormControlLabel,
+    Checkbox,
+    SwipeableDrawer,
+    Paper,
+    Button,
+    Radio,
+    RadioGroup,
+    FormControl,
+    FormLabel,
+ } from '@material-ui/core';
+ import { KeyboardDatePicker } from '@material-ui/pickers'
+ import { connect } from 'react-redux';
 
 const {
-	FilterContent,
-	FilterContentBlock,
-	FilterCell,
-	FilterHeaderPaper,
-	SwitchDrawerText,
-  HeaderCheck,
-  FilterFileType,
-  SelectFileType,
+  FilterContent,
+  FilterContentBlock,
+  FilterCell,
+  FilterHeaderPaper,
 } = Styles.default;
 
-function TableFilter(props) {
-	const {
-		classes = {},
-		filterType,
-		toggleTableFilter,
-		days,
-		handleSwitchChange,
-		filterLeft,
-		filterRight,
-		filterHeaderClick,
-		pinned,
-    exHeadersNames,
-    fileType,
-    onFileTypeChange,
-    isDownload = false,
-  } = props || {};
-  // console.log(exHeadersNames, filterLeft);
-  return (
-    <SwipeableDrawer
-      anchor="right"
-      open={filterType !== ''}
-      onOpen={() => {}}
-      onClose={() => toggleTableFilter('')}
-    >
-      <FilterContent>
-        {filterType === 'column' && (
-          <FilterContentBlock>
-            {/* {isDownload && (<SelectFileType>
-              <Select
-                value={fileType}
-                onChange={onFileTypeChange}
-                input={<BootstrapInput name="fileType" id="file-customized-select" />}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value="EXCEL">
-                  <FilterFileType>
-                    <div>EXCEL</div>
-                    <HeaderCheck><i className="fa fa-check" aria-hidden="true" /></HeaderCheck>
-                  </FilterFileType>
-                </MenuItem>
-                <MenuItem value="CSV">
-                  <FilterFileType>
-                    <div>CSV</div>
-                    <HeaderCheck><i className="fa fa-check" aria-hidden="true" /></HeaderCheck>
-                  </FilterFileType>
-                </MenuItem>
-              </Select>
-            </SelectFileType>)}
-            <FormGroup row>
-              <FormGroup column>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={days.includes("30 Days")}
-                        onChange={handleSwitchChange}
-                        value="30 Days"
-                        classes={{
-                          switchBase: classes.colorSwitchBase,
-                          checked: classes.colorChecked,
-                          bar: classes.colorBar,
-                        }}
-                      />
-                    }
-                    label={<SwitchDrawerText>30 Days</SwitchDrawerText>}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={days.includes("90 Days")}
-                        onChange={handleSwitchChange}
-                        value="90 Days"
-                        classes={{
-                          switchBase: classes.colorSwitchBase,
-                          checked: classes.colorChecked,
-                          bar: classes.colorBar,
-                        }}
-                      />
-                    }
-                    label={<SwitchDrawerText>90 Days</SwitchDrawerText>}
-                  />
-              </FormGroup>
-              <FormGroup column>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={days.includes("Mail Order")}
-                        onChange={handleSwitchChange}
-                        value="Mail Order"
-                        classes={{
-                          switchBase: classes.colorSwitchBase,
-                          checked: classes.colorChecked,
-                          bar: classes.colorBar,
-                        }}
-                      />
-                    }
-                    label={<SwitchDrawerText>Mail Order</SwitchDrawerText>}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={days.includes("Retail Order")}
-                        onChange={handleSwitchChange}
-                        value="Retail Order"
-                        classes={{
-                          switchBase: classes.colorSwitchBase,
-                          checked: classes.colorChecked,
-                          bar: classes.colorBar,
-                        }}
-                      />
-                    }
-                    label={<SwitchDrawerText>Retail</SwitchDrawerText>}
-                  />
-              </FormGroup>
-            </FormGroup> */}
-            <b>Table Columns Selection</b>
-            <FilterHeaderPaper>
-              <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
-                {
-                  <Fragment>
-                    <FilterCell name="Select All" onClick={filterHeaderClick}>
-                      <div>{!exHeadersNames.includes('Select All') ? 'Select All' : 'Deselect All'}</div>
-                    </FilterCell>
-                    {Array.isArray(filterLeft) && filterLeft.map(name =>
-                      <FilterCell key={name} name={name} onClick={filterHeaderClick} style={{ color: 'black', cursor: 'pointer' }}>
-                        {/* style={{ color: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '#777': 'black'}`, cursor: `${pinned.includes(name.toLowerCase().replace(/ /g,'_')) ? '' : 'pointer'}` }} */}
-                        <div>{name}</div>
-                        {!exHeadersNames.includes(name) &&
-                        <HeaderCheck>
-                          <i className="fa fa-check" aria-hidden="true" />
-                        </HeaderCheck>}
-                      </FilterCell>
-                    )}
-                  </Fragment>
-                }
-              </Paper>
-              <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
-                {
-                  Array.isArray(filterRight) && filterRight.map(name => 
-                    <FilterCell key={name} name={`${Array.isArray(days) && days.length < 2 ? null : name}`} onClick={filterHeaderClick} className={`${Array.isArray(days) && days.length < 2 ? 'disabled' : ''}`} style={{ color: 'black', cursor: 'pointer' }}>
-                      <div>{name}</div>
-                        {!exHeadersNames.includes(name) && (Array.isArray(days) && days.length >= 2) &&
-                        <HeaderCheck>
-                          <i className="fa fa-check" aria-hidden="true" />
-                        </HeaderCheck>}
-                    </FilterCell>
-                  )
-                }
-              </Paper>
-            </FilterHeaderPaper>
-          </FilterContentBlock>
-        )}
-        {filterType === 'search' && (
-          <FilterContentBlock>
-            data comes here
-          </FilterContentBlock>
-        )}
-      </FilterContent>
-    </SwipeableDrawer>
-  );
-}
+const GreenCheckbox = withStyles({
+    root: {
+      color: green[400],
+      '&$checked': {
+        color: green[600],
+      },
+    },
+    checked: {},
+  })(props => <Checkbox color="default" {...props} />);
 
-export default withStyles(styles)(TableFilter);
+class ColumnFilter extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedCols: [],
+            selectedSearchType: null,
+            startDate: null,
+            endDate: null,
+        };
+    }
+
+    componentWillReceiveProps() {
+        const { exclude: selectedCols } = this.props.Data;
+        console.log(selectedCols);
+        this.setState({ selectedCols });
+    }
+
+    onCheckBoxClick = ({ target : { value } }) => {
+        console.log(value);
+        const { selectedCols } = this.state;
+        const pos = selectedCols.indexOf(value);
+        if(pos > -1) selectedCols.splice(pos, 1);
+        else selectedCols.push(value);
+        this.setState({ selectedCols });
+    }
+
+    getColumn = (name) => {
+        console.log(name);
+        return (
+    <FormControlLabel
+      control={
+        <GreenCheckbox
+          checked={this.state.selectedCols.includes(name)}
+          onChange={this.onCheckBoxClick}
+          value={name}
+        />
+      }
+      label={name}
+    />)}
+
+    onApply = () => {
+       const { selectedCols } = this.state;
+       this.props.setColumnFilter(selectedCols, 'column');
+       this.props.toggleTableFilter('')
+    }
+
+    handleSearchChange = ({ target: { value } }) => {
+      console.log(value);
+      this.setState({ selectedSearchType: value });
+    }
+
+    handleDateChange = (value, name) => {
+      this.setState({ [name]: value })
+    }
+
+    render() { 
+        const {
+            filterType,
+            toggleTableFilter,
+            columns,
+        } = this.props || {};
+        console.log(columns, filterType);
+        const { selectedSearchType, startDate, endDate } = this.state;
+        return (
+          <SwipeableDrawer
+            anchor="right"
+            open={filterType !== ''}
+            onOpen={() => {}}
+            onClose={() => toggleTableFilter('')}
+          >
+            <FilterContent>
+                {filterType === 'column' && (<FilterContentBlock>
+                  <b>Columns Selection</b>
+                  <FilterHeaderPaper>
+                    <Paper style={{ padding: '0.5rem', marginTop: 10, width: '15.5vw' }}>
+                      {
+                        <Fragment>
+                          {/* <FilterCell name="Select All" onClick={filterHeaderClick}>
+                            <div>{!exHeadersNames.includes('Select All') ? 'Select All' : 'Deselect All'}</div>
+                          </FilterCell> */}
+                          {Array.isArray(columns) && columns.map(({name}) =>
+                            <FilterCell key={name} name={name} style={{ color: 'black', cursor: 'pointer' }}>
+                                {this.getColumn(name)}
+                            </FilterCell>
+                          )}
+                        </Fragment>
+                      }
+                    </Paper>
+                  </FilterHeaderPaper>
+                </FilterContentBlock>)}
+                {filterType === 'search' && (
+                  <FilterContentBlock>
+                    <FormControl component="fieldset">
+                    <FormLabel component="legend">Date Range</FormLabel>
+                    <RadioGroup aria-label="search" name="search" value={selectedSearchType} onChange={this.handleSearchChange}>
+                      <FormControlLabel value="last12" control={<Radio />} label="Last 12 Months" />
+                      {selectedSearchType === 'last12' ? <div style={{ color: '#ccc' }}>{`${moment().subtract(1, 'year').format('MM/DD/YYYY')} - ${moment().format('MM/DD/YYYY')}`}</div> : null}
+                      <FormControlLabel value="lastYear" control={<Radio />} label="Last Full Calender Year" />
+                      {selectedSearchType === 'lastYear' ? <div style={{ color: '#ccc' }}>{`${moment(`1/1/${moment().year()}`).subtract(1, 'year').format('MM/DD/YYYY')} - ${moment(`1/1/${moment().year()}`).format('MM/DD/YYYY')}`}</div> : null}
+                      <FormControlLabel value="ytd" control={<Radio />} label="Calender YTD" />
+                      {selectedSearchType === 'ytd' ? <div style={{ color: '#ccc' }}>{`${moment(`1/1/${moment().year()}`).format('MM/DD/YYYY')} - ${moment().format('MM/DD/YYYY')}`}</div> : null}
+                      <FormControlLabel value="dateSelection" control={<Radio />} label="Date Selection" />
+                      {selectedSearchType === 'dateSelection' ? (
+                        <Fragment>
+                          <KeyboardDatePicker
+                            autoOk
+                            variant="inline"
+                            inputVariant="outlined"
+                            label="With keyboard"
+                            format="MM/dd/yyyy"
+                            value={startDate}
+                            name="startDate"
+                            InputAdornmentProps={{ position: "start" }}
+                            onChange={date => this.handleDateChange(date, 'startDate')}
+                          />
+                          <KeyboardDatePicker
+                            autoOk
+                            variant="inline"
+                            inputVariant="outlined"
+                            label="With keyboard"
+                            format="MM/dd/yyyy"
+                            name="endDate"
+                            value={endDate}
+                            InputAdornmentProps={{ position: "start" }}
+                            onChange={date => this.handleDateChange(date, 'endDate')}
+                          />
+                        </Fragment>
+                      ) : null}
+                    </RadioGroup>
+                  </FormControl>
+                  </FilterContentBlock>
+                )}
+                 <Button style={{ marginTop: '2rem' }} variant="contained" color="primary" onClick={this.onApply}>
+                   Apply
+                 </Button>
+            </FilterContent>
+          </SwipeableDrawer>
+        );
+    }
+}
+ 
+const mapStateToProps = (state) => ({
+    Data: state.data,
+})
+
+export default connect(mapStateToProps)(ColumnFilter);

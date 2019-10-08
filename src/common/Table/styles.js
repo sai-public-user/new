@@ -145,6 +145,7 @@ const SwitchDrawerText = styled.div `
 
 const TableFilterIcon = styled.span `
     cursor: pointer;
+    margin-left: 1rem;
 `;
 
 const FilterContent = styled.div `

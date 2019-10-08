@@ -153,7 +153,7 @@ const initalState = {
     // days: [ 'Retail Order', '30 Days' ],
     // maxPin: 5,
     // maxCompare: 5,
-    normalize: 'nonNormalizedMetrics',
+    normalize: false,
     exclude: ['select_all'],
 };
 

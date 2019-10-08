@@ -13,7 +13,8 @@ function PageHeader(props) {
         <Header>
             <span><h1>Benefits Structures</h1></span>
             <TableFilters>
-                <TableFilterIcon onClick={() => props.onTableToggle('column', false)}><i class="fa fa-table fa-lg" aria-hidden="true" /></TableFilterIcon>
+                <TableFilterIcon onClick={() => props.onTableToggle('search', false)}><i title="Search" class="fa fa-search fa-lg" aria-hidden="true" /></TableFilterIcon>
+                <TableFilterIcon onClick={() => props.onTableToggle('column', false)}><i title="Column Filter" class="fa fa-table fa-lg" aria-hidden="true" /></TableFilterIcon>
             </TableFilters>
         </Header>
     )

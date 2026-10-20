@@ -340,3 +340,69 @@ public class EncryptionJmhBenchmark {
 2. **Framework:** Utilize the **Custom Wire Protocol Envelope** (as defined in Section 6.1). It decouples the application layer from broker-specific headers, keeping payloads small and messaging architectures fully agnostic.
 3. **Provider:** Deploy the **Amazon Corretto Crypto Provider (ACCP)** as the primary JCA engine. It offers 2x-3x the throughput of Bouncy Castle, reducing compute requirements on Kafka consumer clusters. Map `SunJCE` as the fallback in the provider factory chain for environments where native libraries cannot load.
 4. **Rollout:** Execute the migration strictly through the defined feature-flag pipeline. Deploy consumers with decryption capability (dual-read) first, stabilize, then enable producer encryption (canary write) for a fraction of traffic to validate KMS caching thresholds before full activation.
+
+# Pure Java Cryptography: Free Alternatives & Performance Analysis
+
+If you are looking for **100% free, open-source, and pure Java** alternatives to standard Bouncy Castle (`bcprov`) for AES-256-GCM, the landscape is highly specific because of how AES-GCM mathematically operates.
+
+Here is the definitive breakdown of the best free, pure-Java alternatives, how they perform, and the architectural "trap" you need to watch out for.
+
+---
+
+## 1. SunJCE (The OpenJDK Default) - *The Best "Pure Java" Option*
+Many engineers overlook the default provider built into OpenJDK, assuming third-party libraries are better. For AES-256-GCM, **SunJCE is the absolute best free, pure-Java option available.**
+
+* **Licensing:** Free (GPLv2 with Classpath Exception via OpenJDK).
+* **Is it Pure Java?** Yes, the API and implementation are pure Java. However, the HotSpot JVM recognizes the SunJCE Java code and uses **C2 JIT Compiler Intrinsics** to swap the Java bytecode with dedicated CPU hardware instructions (`AES-NI` for encryption and `PCLMULQDQ` for the GCM GHASH tag).
+* **Performance:** **Exceptional.** Because of JVM intrinsics, it is generally **2x to 3x faster** than Bouncy Castle's pure Java implementation.
+* **Verdict:** You already have this for free in your JDK. It should be your primary choice.
+
+---
+
+## 2. Standard Bouncy Castle (`bcprov-jdk18on`)
+Since you mentioned preferring this, it is worth clarifying exactly where it stands.
+
+* **Licensing:** Free (MIT License).
+* **Is it Pure Java?** Yes, 100% pure Java.
+* **Performance:** **Moderate to Slow for GCM.** Bouncy Castle calculates the AES rounds and the GCM Galois-field multiplications entirely in Java software. It cannot leverage the JVM hardware intrinsics the way SunJCE does. Under high messaging volume (e.g., thousands of Kafka messages per second), Bouncy Castle will consume significantly more CPU and generate more Garbage Collection (GC) churn than SunJCE.
+* **Verdict:** Excellent for general cryptography and reading weird certificate formats, but a bottleneck for high-throughput AES-GCM data planes.
+
+---
+
+## 3. Google Tink (Java Distribution)
+Google Tink is not a JCA Provider (like Bouncy Castle or SunJCE), but rather a high-level cryptographic library built by Google cryptographers.
+
+* **Licensing:** Free (Apache 2.0).
+* **Is it Pure Java?** Yes, the Java distribution is pure Java. Under the hood, Tink delegates the actual math to SunJCE by default (to get the hardware speed) but removes all the boilerplate.
+* **Performance:** **Exceptional.** It matches SunJCE because it uses it under the hood, but it prevents you from making mistakes (like reusing an IV).
+* **Verdict:** If you want a free, pure-Java library that handles envelope framing, key rotation, and AES-GCM safely without you having to write the `Cipher.getInstance()` boilerplate, Tink is the best open-source choice.
+
+---
+
+## 4. Apache Commons Crypto
+Apache built this library specifically because pure-Java AES is slow, but they designed it to be highly fallback-friendly.
+
+* **Licensing:** Free (Apache 2.0).
+* **Is it Pure Java?** **Hybrid.** By default, it tries to use a bundled JNI (C/C++) wrapper around OpenSSL to achieve maximum speed. If the native library fails to load on your OS, it seamlessly falls back to a pure Java JCE implementation.
+* **Performance:** **Ultra-High** (when native) or **Baseline** (when pure Java).
+* **Verdict:** Great if you want native speed but need a guaranteed pure-Java fallback just in case, all under a permissive Apache license.
+
+---
+
+## The "Pure Java" Performance Trap (Why Bouncy Castle is Slower)
+
+In AES-GCM, the "GCM" part stands for Galois/Counter Mode. Creating the authentication tag requires multiplying 128-bit polynomials over a Galois field (GF(2^128)). 
+
+* In **pure Java software** (like Bouncy Castle), this requires hundreds of bit-shifting and XOR operations per block. This burns CPU cycles rapidly.
+* In **JVM Intrinsics** (SunJCE) or **Native code** (Amazon Corretto / Apache Commons), the CPU uses a single, dedicated microchip instruction (`PCLMULQDQ`) to do this multiplication in 1 or 2 clock cycles.
+
+---
+
+## Final Recommendation for a "Freeware" Architecture
+
+If you want a 100% free, open-source solution with zero native OS dependencies (no `.so` or `.dll` files), **do not default to Bouncy Castle for the data plane.**
+
+Instead, configure your application like this:
+1. **Primary Provider:** Use **SunJCE** (Standard Java `Cipher.getInstance("AES/GCM/NoPadding")`). It is free, requires zero external dependencies, and gives you hardware acceleration via the JVM.
+2. **Key Management:** Write your own Data Key Cache (as outlined in the previous documents) or use **Google Tink** (free, Apache 2.0) to handle the envelope framing safely in pure Java.
+3. **Fallback:** Keep Bouncy Castle on the classpath *only* if you need to support obscure legacy algorithms that SunJCE doesn't support, but keep AES-GCM routed to SunJCE.

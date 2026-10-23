@@ -1,0 +1,44 @@
+flowchart TD
+    %% Styling & Classes
+    classDef triggerStyle fill:#E1F5FE,stroke:#0288D1,stroke-width:2px,color:#01579B;
+    classDef sourceStyle fill:#FFF3E0,stroke:#FB8C00,stroke-width:2px,color:#E65100;
+    classDef computeStyle fill:#E8F5E9,stroke:#43A047,stroke-width:2px,color:#1B5E20;
+    classDef storageStyle fill:#EDE7F6,stroke:#7E57C2,stroke-width:2px,color:#311B92;
+    classDef queryStyle fill:#FCE4EC,stroke:#E91E63,stroke-width:2px,color:#880E4F;
+
+    subgraph Schedule["1. Orchestration & Scheduling"]
+        CRON["Amazon EventBridge Rule<br/>(Scheduled Daily Cron: 02:00 UTC)"]:::triggerStyle
+    end
+
+    subgraph Source["2. Source Layer"]
+        AR["Arize AI Platform<br/>(GenAI Usage Traces & Metrics)<br/>⚠️ Data expires after 7 days"]:::sourceStyle
+    end
+
+    subgraph IngestionCompute["3. Compute & Extraction (AWS Lambda)"]
+        direction TB
+        INIT["Fetch Secrets<br/>(Arize API Key from Secrets Manager)"]:::computeStyle
+        QUERY["Query Arize via Arrow Flight SDK<br/>(Time Window: [T-24h to T])"]:::computeStyle
+        TRANSFORM["Validate & In-Memory Transform<br/>(Pandas DataFrame ➔ Snappy Parquet)"]:::computeStyle
+        UPLOAD["Stream to S3 via Boto3<br/>(s3:PutObject)"]:::computeStyle
+
+        INIT --> QUERY
+        QUERY --> TRANSFORM
+        TRANSFORM --> UPLOAD
+    end
+
+    subgraph Storage["4. Long-Term Data Lake"]
+        S3[("Tandem S3 Bucket<br/>s3://tandem-arize-metrics/<br/>Partitioned: year=YYYY/month=MM/day=DD/")]:::storageStyle
+    end
+
+    subgraph Analytics["5. Downstream Analytics"]
+        ATHENA["Amazon Athena / Glue Catalog"]:::queryStyle
+        BI["BI Dashboards & Reports<br/>(Snowflake, QuickSight, Tableau)"]:::queryStyle
+        
+        ATHENA --> BI
+    end
+
+    %% Flow Connections
+    CRON -->|"Trigger Daily Job"| INIT
+    QUERY <-->|"gRPC / Arrow Flight API"| AR
+    UPLOAD -->|"Write .parquet"| S3
+    S3 -.->|"External Table Scan"| ATHENA
